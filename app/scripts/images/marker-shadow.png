@@ -8,7 +8,7 @@
   <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# object: http://ogp.me/ns/object# article: http://ogp.me/ns/article# profile: http://ogp.me/ns/profile#">
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Leaflet/dist/images/marker-icon.png at master · Leaflet/Leaflet</title>
+        <title>Leaflet/dist/images/marker-shadow.png at master · Leaflet/Leaflet</title>
     <link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="GitHub" />
     <link rel="fluid-icon" href="https://github.com/fluidicon.png" title="GitHub" />
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-114.png" />
@@ -20,7 +20,7 @@
       <meta content="@github" name="twitter:site" /><meta content="summary" name="twitter:card" /><meta content="Leaflet/Leaflet" name="twitter:title" /><meta content="Leaflet - JavaScript library for mobile-friendly interactive maps" name="twitter:description" /><meta content="https://0.gravatar.com/avatar/0c2736bb2ad9e38382ec2b77120aa86e?d=https%3A%2F%2Fidenticons.github.com%2Fa87470753825f053b33f162fb8e33872.png&amp;r=x&amp;s=400" name="twitter:image:src" />
 <meta content="GitHub" property="og:site_name" /><meta content="object" property="og:type" /><meta content="https://0.gravatar.com/avatar/0c2736bb2ad9e38382ec2b77120aa86e?d=https%3A%2F%2Fidenticons.github.com%2Fa87470753825f053b33f162fb8e33872.png&amp;r=x&amp;s=400" property="og:image" /><meta content="Leaflet/Leaflet" property="og:title" /><meta content="https://github.com/Leaflet/Leaflet" property="og:url" /><meta content="Leaflet - JavaScript library for mobile-friendly interactive maps" property="og:description" />
 
-    <meta name="hostname" content="github-fe140-cp1-prd.iad.github.net">
+    <meta name="hostname" content="github-fe124-cp1-prd.iad.github.net">
     <meta name="ruby" content="ruby 2.1.0p0-github-tcmalloc (87c9373a41) [x86_64-linux]">
     <link rel="assets" href="https://github.global.ssl.fastly.net/">
     <link rel="conduit-xhr" href="https://ghconduit.com:25035/">
@@ -30,7 +30,7 @@
     <meta name="msapplication-TileImage" content="/windows-tile.png" />
     <meta name="msapplication-TileColor" content="#ffffff" />
     <meta name="selected-link" value="repo_source" data-pjax-transient />
-    <meta content="collector.githubapp.com" name="octolytics-host" /><meta content="collector-cdn.github.com" name="octolytics-script-host" /><meta content="github" name="octolytics-app-id" /><meta content="54CFFC04:3E2C:2BF8ECF:5301001B" name="octolytics-dimension-request_id" /><meta content="309976" name="octolytics-actor-id" /><meta content="bquinn" name="octolytics-actor-login" /><meta content="18a3a7f16d95de1a4cb2cb022ef26e0cb31d09580b0fc0346dc243c541de50c8" name="octolytics-actor-hash" />
+    <meta content="collector.githubapp.com" name="octolytics-host" /><meta content="collector-cdn.github.com" name="octolytics-script-host" /><meta content="github" name="octolytics-app-id" /><meta content="54CFFC04:3E2C:2BF9E05:5301004B" name="octolytics-dimension-request_id" /><meta content="309976" name="octolytics-actor-id" /><meta content="bquinn" name="octolytics-actor-login" /><meta content="18a3a7f16d95de1a4cb2cb022ef26e0cb31d09580b0fc0346dc243c541de50c8" name="octolytics-actor-hash" />
     
 
     
@@ -51,7 +51,7 @@
       
       <meta http-equiv="x-pjax-version" content="84592675e6037c2d77d871bf84245a86">
 
-        <link data-pjax-transient rel='permalink' href='/Leaflet/Leaflet/blob/ad661c94e4ed8d26a6c480737c31e44c0b9109a8/dist/images/marker-icon.png'>
+        <link data-pjax-transient rel='permalink' href='/Leaflet/Leaflet/blob/ad661c94e4ed8d26a6c480737c31e44c0b9109a8/dist/images/marker-shadow.png'>
 
   <meta name="description" content="Leaflet - JavaScript library for mobile-friendly interactive maps" />
 
@@ -468,7 +468,7 @@
           
 
 
-<!-- blob contrib key: blob_contributors:v21:4ba26b0a4918419a37c4df8501f4af4b -->
+<!-- blob contrib key: blob_contributors:v21:570dd746dee79c70f17931b2d0991193 -->
 
 <p title="This is a placeholder element" class="js-history-link-replace hidden"></p>
 
@@ -518,7 +518,7 @@
 
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/blob/cache-mouse-pos/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/blob/cache-mouse-pos/dist/images/marker-shadow.png"
                  data-name="cache-mouse-pos"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -527,7 +527,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/blob/easey/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/blob/easey/dist/images/marker-shadow.png"
                  data-name="easey"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -536,7 +536,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/blob/gh-pages/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/blob/gh-pages/dist/images/marker-shadow.png"
                  data-name="gh-pages"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -545,7 +545,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/blob/gh-pages-0.6/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/blob/gh-pages-0.6/dist/images/marker-shadow.png"
                  data-name="gh-pages-0.6"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -554,7 +554,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/blob/gh-pages-master/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/blob/gh-pages-master/dist/images/marker-shadow.png"
                  data-name="gh-pages-master"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -563,7 +563,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/blob/grid/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/blob/grid/dist/images/marker-shadow.png"
                  data-name="grid"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -572,7 +572,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/blob/linearzoom/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/blob/linearzoom/dist/images/marker-shadow.png"
                  data-name="linearzoom"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -581,7 +581,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item selected">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/blob/master/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/blob/master/dist/images/marker-shadow.png"
                  data-name="master"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -590,7 +590,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/blob/stable/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/blob/stable/dist/images/marker-shadow.png"
                  data-name="stable"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -608,7 +608,7 @@
 
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/tree/v0.7.2/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/tree/v0.7.2/dist/images/marker-shadow.png"
                  data-name="v0.7.2"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -617,7 +617,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/tree/v0.7.1/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/tree/v0.7.1/dist/images/marker-shadow.png"
                  data-name="v0.7.1"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -626,7 +626,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/tree/v0.7/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/tree/v0.7/dist/images/marker-shadow.png"
                  data-name="v0.7"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -635,7 +635,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/tree/v0.6.4/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/tree/v0.6.4/dist/images/marker-shadow.png"
                  data-name="v0.6.4"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -644,7 +644,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/tree/v0.6.3/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/tree/v0.6.3/dist/images/marker-shadow.png"
                  data-name="v0.6.3"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -653,7 +653,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/tree/v0.6.2/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/tree/v0.6.2/dist/images/marker-shadow.png"
                  data-name="v0.6.2"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -662,7 +662,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/tree/v0.6.1/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/tree/v0.6.1/dist/images/marker-shadow.png"
                  data-name="v0.6.1"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -671,7 +671,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/tree/v0.6/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/tree/v0.6/dist/images/marker-shadow.png"
                  data-name="v0.6"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -680,7 +680,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/tree/v0.5.1/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/tree/v0.5.1/dist/images/marker-shadow.png"
                  data-name="v0.5.1"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -689,7 +689,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/tree/v0.5/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/tree/v0.5/dist/images/marker-shadow.png"
                  data-name="v0.5"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -698,7 +698,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/tree/v0.4.5/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/tree/v0.4.5/dist/images/marker-shadow.png"
                  data-name="v0.4.5"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -707,7 +707,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/tree/v0.4.4/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/tree/v0.4.4/dist/images/marker-shadow.png"
                  data-name="v0.4.4"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -716,7 +716,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/tree/v0.4.3/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/tree/v0.4.3/dist/images/marker-shadow.png"
                  data-name="v0.4.3"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -725,7 +725,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/tree/v0.4.2/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/tree/v0.4.2/dist/images/marker-shadow.png"
                  data-name="v0.4.2"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -734,7 +734,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/tree/v0.4.1/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/tree/v0.4.1/dist/images/marker-shadow.png"
                  data-name="v0.4.1"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -743,7 +743,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/tree/v0.4/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/tree/v0.4/dist/images/marker-shadow.png"
                  data-name="v0.4"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -752,7 +752,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/tree/v0.3.1/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/tree/v0.3.1/dist/images/marker-shadow.png"
                  data-name="v0.3.1"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -761,7 +761,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/tree/v0.3/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/tree/v0.3/dist/images/marker-shadow.png"
                  data-name="v0.3"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -770,7 +770,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/tree/v0.2.1/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/tree/v0.2.1/dist/images/marker-shadow.png"
                  data-name="v0.2.1"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -779,7 +779,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/tree/v0.2/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/tree/v0.2/dist/images/marker-shadow.png"
                  data-name="v0.2"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -788,7 +788,7 @@
             </div> <!-- /.select-menu-item -->
             <div class="select-menu-item js-navigation-item ">
               <span class="select-menu-item-icon octicon octicon-check"></span>
-              <a href="/Leaflet/Leaflet/tree/v0.1/dist/images/marker-icon.png"
+              <a href="/Leaflet/Leaflet/tree/v0.1/dist/images/marker-shadow.png"
                  data-name="v0.1"
                  data-skip-pjax="true"
                  rel="nofollow"
@@ -805,12 +805,12 @@
 </div> <!-- /.select-menu -->
 
   <div class="breadcrumb">
-    <span class='repo-root js-repo-root'><span itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="/Leaflet/Leaflet" data-branch="master" data-direction="back" data-pjax="true" itemscope="url"><span itemprop="title">Leaflet</span></a></span></span><span class="separator"> / </span><span itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="/Leaflet/Leaflet/tree/master/dist" data-branch="master" data-direction="back" data-pjax="true" itemscope="url"><span itemprop="title">dist</span></a></span><span class="separator"> / </span><span itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="/Leaflet/Leaflet/tree/master/dist/images" data-branch="master" data-direction="back" data-pjax="true" itemscope="url"><span itemprop="title">images</span></a></span><span class="separator"> / </span><strong class="final-path">marker-icon.png</strong> <span class="js-zeroclipboard minibutton zeroclipboard-button" data-clipboard-text="dist/images/marker-icon.png" data-copied-hint="copied!" title="copy to clipboard"><span class="octicon octicon-clippy"></span></span>
+    <span class='repo-root js-repo-root'><span itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="/Leaflet/Leaflet" data-branch="master" data-direction="back" data-pjax="true" itemscope="url"><span itemprop="title">Leaflet</span></a></span></span><span class="separator"> / </span><span itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="/Leaflet/Leaflet/tree/master/dist" data-branch="master" data-direction="back" data-pjax="true" itemscope="url"><span itemprop="title">dist</span></a></span><span class="separator"> / </span><span itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="/Leaflet/Leaflet/tree/master/dist/images" data-branch="master" data-direction="back" data-pjax="true" itemscope="url"><span itemprop="title">images</span></a></span><span class="separator"> / </span><strong class="final-path">marker-shadow.png</strong> <span class="js-zeroclipboard minibutton zeroclipboard-button" data-clipboard-text="dist/images/marker-shadow.png" data-copied-hint="copied!" title="copy to clipboard"><span class="octicon octicon-clippy"></span></span>
   </div>
 </div>
 
 
-  <div class="commit commit-loader file-history-tease js-deferred-content" data-url="/Leaflet/Leaflet/contributors/master/dist/images/marker-icon.png">
+  <div class="commit commit-loader file-history-tease js-deferred-content" data-url="/Leaflet/Leaflet/contributors/master/dist/images/marker-shadow.png">
     Fetching contributors…
 
     <div class="participation">
@@ -826,22 +826,22 @@
         <span class="icon"><b class="octicon octicon-file-text"></b></span>
         <span class="mode" title="File Mode">file</span>
         <span class="meta-divider"></span>
-        <span>1.747 kb</span>
+        <span>0.797 kb</span>
       </div>
       <div class="actions">
         <div class="button-group">
             <a class="minibutton tooltipped leftwards js-conduit-openfile-check"
                href="http://mac.github.com"
-               data-url="github-mac://openRepo/https://github.com/Leaflet/Leaflet?branch=master&amp;filepath=dist%2Fimages%2Fmarker-icon.png"
+               data-url="github-mac://openRepo/https://github.com/Leaflet/Leaflet?branch=master&amp;filepath=dist%2Fimages%2Fmarker-shadow.png"
                aria-label="Open this file in GitHub for Mac"
                data-failed-title="Your version of GitHub for Mac is too old to open this file. Try checking for updates.">
                 <span class="octicon octicon-device-desktop"></span> Open
             </a>
-          <a href="/Leaflet/Leaflet/raw/master/dist/images/marker-icon.png" class="button minibutton " id="raw-url">Raw</a>
-          <a href="/Leaflet/Leaflet/commits/master/dist/images/marker-icon.png" class="button minibutton " rel="nofollow">History</a>
+          <a href="/Leaflet/Leaflet/raw/master/dist/images/marker-shadow.png" class="button minibutton " id="raw-url">Raw</a>
+          <a href="/Leaflet/Leaflet/commits/master/dist/images/marker-shadow.png" class="button minibutton " rel="nofollow">History</a>
         </div><!-- /.button-group -->
           <a class="minibutton danger empty-icon tooltipped downwards"
-             href="/Leaflet/Leaflet/delete/master/dist/images/marker-icon.png"
+             href="/Leaflet/Leaflet/delete/master/dist/images/marker-shadow.png"
              aria-label="Fork this project and delete file"
              data-method="post" data-test-id="delete-blob-file" rel="nofollow">
           Delete
@@ -850,7 +850,7 @@
     </div>
         <div class="blob-wrapper data type-text js-blob-data">
       <div class="image js-image">
-          <span class="border-wrap"><img src="/Leaflet/Leaflet/blob/master/dist/images/marker-icon.png?raw=true" /></span>
+          <span class="border-wrap"><img src="/Leaflet/Leaflet/blob/master/dist/images/marker-shadow.png?raw=true" /></span>
       </div>
   </div>
 
@@ -892,7 +892,7 @@
     </a>
 
     <ul class="site-footer-links">
-      <li>&copy; 2014 <span title="0.04855s from github-fe140-cp1-prd.iad.github.net">GitHub</span>, Inc.</li>
+      <li>&copy; 2014 <span title="0.04751s from github-fe124-cp1-prd.iad.github.net">GitHub</span>, Inc.</li>
         <li><a href="/site/terms">Terms</a></li>
         <li><a href="/site/privacy">Privacy</a></li>
         <li><a href="/security">Security</a></li>
