@@ -383,7 +383,8 @@ requestData: function(params, callback){
   var app = this, map = app.map;
 
   $.getJSON('http://floodfeeder.cluefulmedia.com/api/floods/?lat='+params.lat+"&lon="+params.lon+"&radius=50", function(data){
-    console.log(data);
+    //console.log(data);
+    app.markerData = data;
     L.geoJson(data).addTo(map);
   });
   //console.log('requesting data', params)
