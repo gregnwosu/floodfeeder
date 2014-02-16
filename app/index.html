@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Flood Feeder</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/dashboard.css" rel="stylesheet">
+    <link href="css/leaflet.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<style>
+#map {
+width: 100%;
+height: 500px;
+}
+#data-layers ul {
+  margin: 0;
+}
+#data-layers ul li input {
+float: right;
+margin-right: 25px;
+}
+#data-layers ul li button {
+  margin-top: 10px;
+}
+</style>
+<body>
+
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Flood feeder</a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#">About</a></li>
+        </ul>
+        <form class="navbar-form navbar-right">
+          <input id="search" class="form-control" placeholder="Search..." type="text">
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div id="data-layers" class="col-sm-3 col-md-2 sidebar">
+        <ul class="nav nav-sidebar">
+          <li><h3>Geography</h3></li>
+          <li>Countries<input id="countries" type="checkbox" /></li>
+          <li>Wards<input id="wards" type="checkbox" /></li>   
+        </ul>
+        <ul class="nav nav-sidebar">
+          <li><h3>Flood data</h3></li>
+          <li>Flood warnings<input id="warnings" type="checkbox" /></li>
+          <li>Flood alerts<input  id="alerts" type="checkbox" /></li>
+          <li>Flood volunteer data<input id="volunteering" type="checkbox" /></li>          
+        </ul>
+        <ul class="nav nav-sidebar">
+          <li><h3>Infrastructure data</h3></li>
+          <li>Cellphone masts<input id="cellphonemasts" type="checkbox" /></li>
+          <li>Transport data<input  id="transportdata" type="checkbox" /></li>
+          <li>NHS data<input id="nhsdata" type="checkbox" /></li>       
+        </ul>
+        <ul class="nav nav-sidebar">
+          <li><button type="button" class="btn btn-default btn-lg">EXPORT JSON</button></li>
+          <li><button type="button" class="btn btn-primary btn-lg">EXPORT GEOJSON</button></li>
+        </ul>
+      </div>
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+        <div id="map">
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="scripts/jquery-2.0.2.min.js"></script>
+  <script src="scripts/bootstrap.js"></script>
+  <script src="scripts/d3.v3.min.js"></script>
+  <script src="scripts/topojson.v1.min.js"></script>
+  <script src="scripts/d3.geo.tile.v0.min.js"></script>
+  <script src="scripts/leaflet.js"></script>
+  <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+
+  <script type="text/javascript">     
+     var geocoder = new google.maps.Geocoder();
+  </script>
+<script>
+
+// grab data
+
+// combine shapes and warning
+
+// add / remove stuff
+
+// spit out geojson
+
+// upload somewhere
+
+
+var Feeder = {
+
+data:{
+  url: ""
+},
+
+mapConfig: {
+  projections:{}
+},
+
+map:{},
+
+init: function(){
+  var app = this;
+
+  app.setupMap();
+  app.bindInteraction();
+
+  //app.loadData(function(data){
+    //app.data.rows = rows;
+    //app.addDataToMap(rows);
+    //app.bindInteraction();
+  //});
+},
+
+setupMap: function(){
+  var app = this;
+
+  app.mapConfig.width = $('#map').width();
+  app.mapConfig.height = $('#map').height();   
+
+  /*app.mapConfig.projections["mercator"] = d3.geo.mercator()
+    .center([0, 60])
+    .scale(100)
+    .rotate([0,0]);*/
+
+  // set up the map
+  app.map = new L.Map('map');
+
+  // create the tile layer with correct attribution
+  var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+  var osmAttrib='Map data © OpenStreetMap contributors';
+  var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 20, attribution: osmAttrib});   
+
+  // start the map in South-East England
+  app.map.setView(new L.LatLng(52.01193653675363, -0.3240966796875), 7);
+  app.map.addLayer(osm);
+
+},
+
+loadData: function(callback){
+
+  var app = this;
+
+  /*d3.csv(app.data.url)
+    .get(function(error, rows) { 
+      callback(rows);
+    });
+  */
+},
+
+
+bindInteraction: function(){
+
+  var app = this, map = app.map;
+
+  $('#data-layers ul li input').click(function(){
+    if($(this).is(':checked')){
+      // on 
+      var loc = map.getCenter();
+      app.requestData({
+        type: $(this).attr('id'),
+        lat: loc.lat,
+        lon: loc.lon,
+        radius: 50
+      }, app.addDataToMap);
+    } else {
+      // off
+    }
+  });
+
+  $('#search').keypress(function(e) {
+    if(e.which == 13) {
+        e.preventDefault();
+        app.focusOnLocation($(this).val());
+    }
+  });
+
+},
+
+focusOnLocation: function(string){
+
+  var app = this, map = app.map;
+
+  string = string.replace(/ /g,'+');
+
+
+  if (geocoder) {
+      geocoder.geocode({ 'address': string+", United+Kingdom" }, function (results, status) {
+         if (status == google.maps.GeocoderStatus.OK) {
+
+            //console.log(results[0].geometry.location);
+
+            if(results.length > 0 && results[0].geometry && results[0].geometry.location){
+              var latlong = L.latLng(results[0].geometry.location.d, results[0].geometry.location.e);
+              map.setView(latlong, 11);
+            }
+
+         }
+         else {
+            console.log("Geocoding failed: " + status);
+         }
+      });
+   }
+
+
+
+  //$.get('https://maps.googleapis.com/maps/api/geocode/json?address=122+Flinders+St,+Darlinghurst,+NSW,+Australia&sensor=false&key=AIzaSyBKeLEYFHnhkhEl9gzt7fycrhvdK6Yp7l8')
+  //$.get('http://maps.googleapis.com/maps/api/geocode/json?address=Staines,+United+Kingdom&sensor=false');
+  /*
+  $.get('http://maps.googleapis.com/maps/api/geocode/json?address='+string+',+United+Kingdom&sensor=false', function(data){
+    if(data && data.geometry && data.geomtery.location){
+      var latlong = L.latLng(data.geomtery.location.lat, data.geomtery.location.lng);
+      map.setView(latlong);
+    }
+  })*/
+
+},
+
+requestData: function(params, callback){
+
+  var app = this, map = app.map;
+
+  console.log('requesting data', params)
+
+},
+
+addDataToMap: function(){
+  var app = this, map = app.map;
+
+},
+
+constructGeoJSON: function(rows){
+
+  var app = this, map = app.map;
+  var markers = [];
+
+  app.data.geoJson = {
+    type: 'FeatureCollection',
+    features: []
+  };
+
+  for (var i = rows.length - 1; i >= 0; i--) {
+    
+    var row = rows[i];
+    //console.log(row);
+
+      var marker = {
+          // this feature is in the GeoJSON format: see geojson.org
+          // for the full specification
+          type: 'Feature',
+          geometry: {
+              type: 'Point',
+              // coordinates here are in longitude, latitude order because
+              // x, y is the standard for GeoJSON and many formats
+              coordinates: [parseFloat(row["Longitude"]), parseFloat(row["Latitude"])]
+          },
+          properties: {
+              title: '',
+              description: ''
+              // one can customize markers by adding simplestyle properties
+              // http://mapbox.com/developers/simplestyle/
+              // 'marker-size': 'small'
+          }
+      };
+
+      app.data.geoJson.features.push(marker);
+  
+  };
+
+  L.geoJson(app.data.geoJson, {
+      onEachFeature: function (feature, layer) {
+          //layer.bindPopup("<b>"+feature.properties.title+"</b><br />"+feature.properties.description);
+      }
+  }).addTo(app.map);
+
+  //map.markerLayer.setGeoJSON(app.data.geoJson);
+  /*map.markerLayer.on('mouseover', function(e) {
+      e.layer.openPopup();
+  });
+  map.markerLayer.on('mouseout', function(e) {
+      e.layer.closePopup();
+  });*/ 
+
+  //console.log(app.data.geoJson);
+
+}
+
+};
+
+(function($){
+  Feeder.init();
+}());
+
+
+
+</script>  
+
+
+</body>
+</html>
