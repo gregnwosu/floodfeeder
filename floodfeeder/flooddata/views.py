@@ -2,7 +2,7 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import render
 from django.views.generic import TemplateView
 import json
-from shoothill_api import getJsonData
+import shoothill_api
 
 class FloodAPIView(TemplateView):
     lat = None
@@ -17,7 +17,7 @@ class FloodAPIView(TemplateView):
         else:
             raise Http404("You must pass a lat and lon parameter to query our data. radius is optional")
 
-        self.data = getJsonData(self.lat, self.lon, self.radius)
+        self.data = shoothill_api.getJsonData(self.lat, self.lon, self.radius)
         return super(FloodAPIView, self).dispatch(request, *args, **kwargs)
 
     def render_to_response(self, context, **kwargs):
