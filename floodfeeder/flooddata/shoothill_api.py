@@ -26,7 +26,7 @@ def makeDict(fa):
    },
   "properties": {
     "title": ad,
-    "html": "<p>"+msg+"</p>"
+    "description": "<p>"+msg+"</p>"
   }
 }
 
