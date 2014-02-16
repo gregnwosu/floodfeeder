@@ -4,7 +4,7 @@ from django.contrib.auth import views
 from .views import FloodAPIView
 
 urlpatterns = patterns('flooddata.views',
-    url(r'^floods$',
+    url(r'^$',
         FloodAPIView.as_view(
             template_name='stub.html'
         ),

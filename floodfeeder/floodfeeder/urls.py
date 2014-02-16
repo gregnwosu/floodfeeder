@@ -7,7 +7,7 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'floodfeeder.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
-    url(r'^api/', include('flooddata.urls')),
+    url(r'^floods/', include('flooddata.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
 )
