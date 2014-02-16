@@ -225,6 +225,8 @@ bindInteraction: function(){
         app.showGeography('countries');
       } else if($(this).attr('id') === 'wards'){
         app.showGeography('wards');
+      } else if($(this).attr('id') === 'cellphonemasts'){
+        app.showCellPhoneMasts();
       }
     } else {
       // off
@@ -247,9 +249,30 @@ bindInteraction: function(){
     }
   });
 
-  $(document).on('.wards', 'click', function(){
-    console.log("clicked country")
+  $('.countries').on('click', function(){
+    console.log("clicked country");
   });
+
+  $('.btn-default').click(function(){
+      window.location.href = 'http://floodfeeder.cluefulmedia.com/subunits.json';
+  });
+  $('.btn-primary').click(function(){
+      window.location.href = 'http://floodfeeder.cluefulmedia.com/uk.json';
+  });
+
+
+},
+
+showCellPhoneMasts: function(){
+
+  var app = this, map = app.map;
+
+  var littleton = L.marker([51.46598592502469,-0.5791854858398438]).bindPopup('O2 Mast 21312'),
+    denver    = L.marker([51.516007082492614, -0.5029678344726562]).bindPopup('Orange Mast DD21'),
+    aurora    = L.marker([51.47197425351888, -0.36289215087890625]).bindPopup('EE Mast AS0D2'),
+    golden    = L.marker([51.45999681055089, -0.5469131469726562]).bindPopup('Orange Mast OR213');
+
+  var masts = L.layerGroup([littleton, denver, aurora, golden]).addTo(map);
 
 },
 
@@ -385,7 +408,14 @@ requestData: function(params, callback){
   $.getJSON('http://floodfeeder.cluefulmedia.com/api/floods/?lat='+params.lat+"&lon="+params.lon+"&radius=50", function(data){
     //console.log(data);
     app.markerData = data;
-    L.geoJson(data).addTo(map);
+    //L.geoJson(data).addTo(map);
+
+    L.geoJson(data, {
+      onEachFeature: function (feature, layer) {
+        layer.bindPopup("<strong>"+feature.properties.title+"</strong><br />"+feature.properties.description);
+      }
+    }).addTo(map);
+
   });
   //console.log('requesting data', params)
 
