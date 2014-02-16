@@ -41,6 +41,24 @@ margin-right: 25px;
 #data-layers ul li button {
   margin-top: 10px;
 }
+.countries {
+  fill: rgba(111, 94, 247, 0.5);
+  stroke: #000000;
+  cursor: pointer;
+}
+.countries:hover {
+  fill: rgba(111, 94, 247, 0.8);
+  stroke: #FFFFFF;
+}
+.subunits {
+  fill: rgba(200, 20, 247, 0.5);
+  stroke: #000000;
+  cursor: pointer;
+}
+.subunits:hover {
+  fill: rgba(240, 60, 247, 0.8);
+  stroke: #FFFFFF;
+}
 </style>
 <body>
 
@@ -196,15 +214,29 @@ bindInteraction: function(){
   $('#data-layers ul li input').click(function(){
     if($(this).is(':checked')){
       // on 
+      if($(this).attr('id') === 'warnings' || $(this).attr('id') === 'alerts'){
       var loc = map.getCenter();
-      app.requestData({
-        type: $(this).attr('id'),
-        lat: loc.lat,
-        lon: loc.lon,
-        radius: 50
-      }, app.addDataToMap);
+        app.requestData({
+          lat: loc.lat,
+          lon: loc.lng,
+          radius: 50
+        }, app.addDataToMap);
+      } else if($(this).attr('id') === 'countries'){
+        app.showGeography('countries');
+      } else if($(this).attr('id') === 'wards'){
+        app.showGeography('wards');
+      }
     } else {
       // off
+      
+      if(false){
+
+      } else if($(this).attr('id') === 'countries'){
+        $('#map').find('svg').remove();
+      } else if($(this).attr('id') === 'wards'){
+        $('#map').find('svg').remove();
+      }
+
     }
   });
 
@@ -215,7 +247,97 @@ bindInteraction: function(){
     }
   });
 
+  $(document).on('.wards', 'click', function(){
+    console.log("clicked country")
+  });
+
 },
+
+showGeography: function(type){
+
+  var app = this, map = app.map;
+
+  app.svg = d3.select(map.getPanes().overlayPane).append("svg"),
+  app.g = app.svg.append("g").attr("class", "leaflet-zoom-hide");
+
+ if(type === "wards"){
+
+    if(!app.subunits){
+      d3.json("subunits.json", function(error, subunits) {
+
+      app.subunits = subunits;
+      app.bounds = d3.geo.bounds(subunits.features);
+      app.path = d3.geo.path().projection(project);
+
+      app.feature = app.g.selectAll("path")
+            .data(subunits.features)
+          .enter().append("path")
+          .attr("class", "path subunits")
+          .attr("d", app.path);
+
+        map.on("viewreset", reset);
+        reset();
+      });
+    } else {
+        app.bounds = d3.geo.bounds(app.subunits.features);
+        app.path = d3.geo.path().projection(project);
+
+        app.feature = app.g.selectAll("path")
+              .data(app.subunits.features)
+            .enter().append("path")
+            .attr("class", "path subunits")
+            .attr("d", app.path);
+
+          map.on("viewreset", reset);
+          reset();
+
+    }  
+
+
+  } else if(type === "countries"){
+    if(!app.uk){
+      d3.json("uk.json", function(error, uk) {
+
+      app.uk = uk;
+      app.bounds = d3.geo.bounds(topojson.feature(uk, uk.objects.subunits));
+      app.path = d3.geo.path().projection(project);
+
+      app.feature = app.g.selectAll("path")
+            .data(topojson.feature(uk, uk.objects.subunits).features)
+          .enter().append("path")
+          .attr("class", "path countries")
+          .attr("d", app.path);
+
+        map.on("viewreset", reset);
+        reset();
+      });
+    } else {
+        app.bounds = d3.geo.bounds(topojson.feature(app.uk, app.uk.objects.subunits));
+        app.path = d3.geo.path().projection(project);
+
+        app.feature = app.g.selectAll("path")
+              .data(topojson.feature(app.uk, app.uk.objects.subunits).features)
+            .enter().append("path")
+            .attr("class", "path countries")
+            .attr("d", app.path);
+
+          map.on("viewreset", reset);
+          reset();
+
+    }
+  }
+
+},
+
+
+
+
+
+
+
+
+
+
 
 focusOnLocation: function(string){
 
@@ -260,7 +382,10 @@ requestData: function(params, callback){
 
   var app = this, map = app.map;
 
-  console.log('requesting data', params)
+  $.getJSON('http://floodfeeder.cluefulmedia.com/api/floods/?lat='+params.lat+"&lon="+params.lon+"&radius=50", function(data){
+    console.log(data);
+  });
+  //console.log('requesting data', params)
 
 },
 
@@ -331,7 +456,27 @@ constructGeoJSON: function(rows){
   Feeder.init();
 }());
 
+  // Reposition the SVG to cover the features.
+  function reset() {
+    var bottomLeft = project(Feeder.bounds[0]),
+        topRight = project(Feeder.bounds[1]);
 
+    Feeder.svg.attr("width", topRight[0] - bottomLeft[0])
+        .attr("height", bottomLeft[1] - topRight[1])
+        .style("margin-left", bottomLeft[0] + "px")
+        .style("margin-top", topRight[1] + "px");
+
+    Feeder.g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
+
+    Feeder.feature.attr("d", Feeder.path);
+  }
+
+  // Use Leaflet to implement a D3 geographic projection.
+  function project(x) {
+
+    var point = Feeder.map.latLngToLayerPoint(new L.LatLng(x[1], x[0]));
+    return [point.x, point.y];
+  } 
 
 </script>  
 
