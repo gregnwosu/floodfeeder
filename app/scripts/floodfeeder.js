@@ -4,21 +4,28 @@
 
 var Feeder = {
 
-  mapConfig: {
-    projections:{}
-  },
+	mapConfig: {
+		projections:{}
+	},
 
-  map:{},
+	map:{},
 
-  feeds: [],
+	data: {},
+
+	layers: {
+		detected:{}
+	},
 
   init: function(){
     var app = this;
 
-    app.createFeedList();
     app.setupMap();
-    app.bindInteraction();
-    app.geocoder = new google.maps.Geocoder();
+    app.centerTarget();
+
+    app.loadFeedConfigs(function(){
+      app.createFeedList();
+      app.bindInteraction();
+    });
 
   },
 
@@ -34,7 +41,9 @@ var Feeder = {
     // create the tile layer with correct attribution
     var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     var osmAttrib='Map data © OpenStreetMap contributors';
-    var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 20, attribution: osmAttrib});   
+    var osm = new L.TileLayer(osmUrl, {
+      minZoom: 1, maxZoom: 20, attribution: osmAttrib
+    });   
 
     // start the map in South-East England
     app.map.setView(new L.LatLng(52.01193653675363, -0.3240966796875), 7);
@@ -42,150 +51,151 @@ var Feeder = {
 
   },
 
-  getFeed: function(id){
-
-
-
-  },
-
   bindInteraction: function(){
 
     var app = this, map = app.map;
 
-    $('#data-layers ul li:not(".category")').click(function(e){
+    $('#data-layers ul li:not(".category, .userArea")').hover(function(){
+      var e = $(this);
+
+      //e.unbind('hover');
+      if(e.attr('id') === "detect"){
+        e.popover({
+          title: "Auto-detection provided by MapIt",
+          content: "Depending on where the center of the map is, we call MapIt's API to suggest which areas contain that point.",
+          placement: 'right'
+        }).popover('show'); 
+      } else {
+        e.popover({
+          title: app.feedConfigs[e.data('category')][e.attr('id')].label,
+          content: app.feedConfigs[e.data('category')][e.attr('id')].description,
+          placement: 'right'
+        }).popover('show');      
+      }
+    },function(){
+      var e = $(this);
+      //e.unbind('hover');
+      e.popover('destroy');
+    });
+
+    $('#data-layers ul li:not(".category, .userArea")').click(function(e){
     	
-    	e.preventDefault();
+    	var toggle = $(this).find('i.toggle');
+     	var id = $(this).attr('id');
 
-    	var checkbox = $(this).find('input[type="checkbox"]');
-     	var id = checkbox.attr('id');
+     	$(this).toggleClass('enabled');
 
-     	if(checkbox.is(':checked')){
-     		checkbox.prop('checked', false);
+     	if(!toggle.hasClass('fa-check-circle')){
+     		toggle.removeClass('fa-circle-o').addClass('fa-check-circle');
+     		if($(this).hasClass('detect')){
+          app.detectArea();
+        } else {
+          app.enableFeed(id);
+        }
      	} else {
-     		checkbox.prop('checked', true);
+			  toggle.removeClass('fa-check-circle').addClass('fa-circle-o');
+        if($(this).hasClass('detect')){
+          app.disableAutoDetect();
+        } else {
+          app.disableFeed(id);
+        }        
      	}	
 
-     	app.toggleFeed(id);
-      
-/*
-      if($(this).is(':checked')){
-        // on 
-        if(id === 'warnings' || $(this).attr('id') === 'alerts'){
-
-          var loc = map.getCenter();
-
-          var params = {
-            url: app.data.warningsURL,
-            data:{
-              lat: loc.lat,
-              lon: loc.lng,
-              radius: 50
-            },
-            success: function(data){
-              app.addPointsToMap(data);
-            },
-            error: function(){
-              console.warn("Unable to retrieve "+$(this).attr('id')+" data, using dummy data");
-              app.addPointsToMap(app.data.dummyWarnings);
-            }
-          };
-
-          app.requestData(params);
-
-        } else if($(this).attr('id') === 'countries'){
-          app.showGeography('countries');
-        } else if($(this).attr('id') === 'wards'){
-          app.showGeography('wards');
-        } else if($(this).attr('id') === 'mobilephonemasts'){
-          app.showCellPhoneMasts();
-          app.addPointsToMap(app.data.mobilephonemasts)
-        }
-
-      } else {
-        // off
-        
-        if(false){
-
-        } else if($(this).attr('id') === 'countries'){
-          $('#map').find('svg').remove();
-        } else if($(this).attr('id') === 'wards'){
-          $('#map').find('svg').remove();
-        }
-
-      }
-      */
     });
+
+    $('li.userArea').on('mouseover', function(){
+      $(this).find('i').addClass('fa-ban');
+    }).on('mouseout', function(){
+      $(this).find('i').removeClass('fa-ban');
+    }).on('click', function(){
+      app.removeUserGeography();
+    });
+
+    map.on('move', function(){
+      if(app.autoDetectEnabled){
+        app.detectArea();
+      }
+	   });
 
     $('#search').keypress(function(e) {
       if(e.which == 13) {
           e.preventDefault();
           app.focusOnLocation($(this).val());
       }
-    });
+    }).parent().find('button').click(function(){
+        app.focusOnLocation($('#search').val());     
+    })
 
-    $('.countries').on('click', function(){
-      console.log("clicked country");
-    });
 
-    $('.btn-default').click(function(){
+    $('button.json').click(function(){
         window.location.href = 'http://floodfeeder.cluefulmedia.com/subunits.json';
     });
-    $('.btn-primary').click(function(){
+    $('button.geojson').click(function(){
         window.location.href = 'http://floodfeeder.cluefulmedia.com/uk.json';
     });
 
 
   },
 
-  toggleFeed: function(id){
+  enableFeed: function(id){
+  	
+  	var app = this;
 
-    var app = this, 
-    map = app.map;
+  	// if feed doesn't exist, load feed
+  	if(!app.data[id] || !app.data[id].loaded) {
+  		app.loadFeed(id);
+  	} else {
+  		// show feed on map
+  		app.showFeedOnMap(id);
+  	}
 
-    if(!app.feeds[id])
-    	app.feeds[id] = {};
+  },
 
-    if(!app.feeds[id].loaded){              // If the feed isn't loaded, load it
+  disableFeed: function(id){
 
-      // load the feed
-      app.getFeed(id, function(data){
+  	var app = this;
+
+  	app.hideFeedFromMap(id);
+
+  },
+
+  loadFeed: function(id, callback){
+
+  	var app = this;
+
+	   app.getFeed(id, function(data){
       	
-      	app.feeds[id].data = data;
-      	app.feeds[id].loaded = true;
+      	console.log("successfully loaded "+id);
+
+      	app.data[id] = {};
+      	app.data[id].data = data;
+      	app.data[id].loaded = true;
       	
       	// add it to map
-     	app.showFeedOnMap(id);
+     	  app.showFeedOnMap(id);
 
       }, function(){						// if error retrieving, try to use dummy data
 
-      	var category = $('#'+id).data('category');
+      	var category = $('li#'+id).data('category');
 
-      	if(app.data[category][id].dummy){
+      	if(app.feedConfigs[category][id].dummy){
       		
-      		app.feeds[id].data = app.data[category][id].dummy;
-      		app.feeds[id].loaded = true;
+      		console.log("loading dummy data for "+id);
+
+      		app.data[id] = {};
+      		app.data[id].data = app.feedConfigs[category][id].dummy;
+      		app.data[id].loaded = true;
       		
       		// add it to map
       		app.showFeedOnMap(id);
       	
       	} else {
-      		app.feeds[id].data = [];
+      		app.data[id].data = [];
       		console.error("Couldn't load feed: "+id);
       	}
       });
-    
-    } else if(!app.feeds[id].isVisible){    // Else, if the feed is not visible on the map, show it 
-      // show feed on map
-      app.showFeedOnMap(id);
-      app.feeds[id].isVisible = true;
-    } else {                                // Else, hide it
-      // hide feed from map
-      app.hideFeedOnMap(id);
-      app.feeds[id].isVisible = false;
-    }
 
   },
-
 
   getFeed: function(id, success, error){
 
@@ -193,298 +203,380 @@ var Feeder = {
 
     var params = app.buildParams(id);
 
-    $.ajax({
-      type:'get',
-      url: params.url,
-      data: params.data,
-      success: success,
-      error: error
-    });
-
-
-  /*
-    $.getJSON(app.data.warningsURL+'?lat='+params.lat+"&lon="+params.lon+"&radius=50", function(data){
-      
-      console.log(data);
-
-      if(!data || data.length === 0){
-        data = app.data.dummyWarnings;
-        console.warn("Using dummy warnings data");
-      }
-      
-      app.markerData = data;
-
-      L.geoJson(data, {
-        onEachFeature: function (feature, layer) {
-          layer.bindPopup("<strong>"+feature.properties.title+"</strong><br />"+feature.properties.description);
-        }
-      }).addTo(map);
-
-    }, function(data){
-      console.log('error?', data);
-    });
-  */
+    if(params.url){
+      $.ajax({
+        type:'get',
+        url: params.url,
+        data: params.data,
+        success: success,
+        error: error
+      });
+    } else {
+      error();
+    }
 
   },
 
   buildParams: function(id){
 
-	var app = this, map = app.map;
-	var loc = map.getCenter();
+  	var app = this, map = app.map;
+  	var loc = map.getCenter();
 
-   	var category = $('#'+id).data('category');
+    var category = $('li#'+id).data('category');
 
-	var params = {
-		url: app.data[category][id].url,
-		data: ''
-	};
+  	var params = {
+  		url: app.feedConfigs[category][id].url,
+  		data: ''
+  	};
 
-	switch(id){
-		case 'warnings':
-		    params.data = {
-		        lat: loc.lat,
-		        lon: loc.lng,
-		        radius: 50
-		    };
-		  break;
-		case 'alerts' : 
-		    params.data = {
-		        lat: loc.lat,
-		        lon: loc.lng,
-		        radius: 50
-		    };
-		  break;
-		case 'countries' : 
+  	switch(id){
+  		case 'warnings':
+  		    params.data = {
+  		        lat: loc.lat,
+  		        lon: loc.lng,
+  		        radius: 50
+  		    };
+  		  break;
+  		case 'alerts' : 
+  		    params.data = {
+  		        lat: loc.lat,
+  		        lon: loc.lng,
+  		        radius: 50
+  		    };
+  		  break;
+  		case 'countries' : 
+  		  break;
+  		case 'wards' :
+  		  break;
+  		case 'mobilephonemasts' :
+  		  break;
+  		default:
+  	  		console.error(id+": can't build params");
+  	  		break;
+  	}
 
-		  break;
-		case 'wards' :
-
-		  break;
-		case 'mobilephonemasts' :
-
-		  break;
-		default:
-	  		console.error(id+": can't build params");
-	  		break;
-	}
-
-	return params;
+  	return params;
   },
 
   showFeedOnMap: function(id){
 
+  	var app = this, map = app.map;
 
+  	switch(id){
+  		case 'countries':
+  			app.showCountries();
+  			break;
+  		case 'wards' : 
+  			app.showWards();
+  			break;
+      case 'warnings':
+      case 'alerts' :
+      case 'mobilephonemasts' : 
+        app.showMarkers(id);
+        break;
+  	}
 
   },
 
   hideFeedFromMap: function(id){
+  	
+  	var app = this, map = app.map;
 
-
+  	map.removeLayer(app.layers[id]);
 
   },
 
-  addPointsToMap: function(data){
+
+  showCountries: function(){
 
     var app = this, map = app.map;
 
-    L.geoJson(data, {
-        onEachFeature: function (feature, layer) {
-          layer.bindPopup("<strong>"+feature.properties.title+"</strong><br />"+feature.properties.description);
+    var countries = app.data['countries'].data;
+
+ 		app.layers['countries'] = 
+      L.geoJson(topojson.feature(countries, countries.objects.subunits).features, {
+
+ 			style: function(feature) {
+ 				
+ 			  var style = {
+          className: 'country'
+        };
+
+        switch (feature.properties.name) {
+          case 'England': 
+          style.fillColor = style.color = "#7900FF"; break;
+          case 'Scotland': 
+          style.fillColor = style.color = "#2277FF"; break;
+          case 'N. Ireland': 
+          style.fillColor = style.color = "#5CB340"; break;
+          case 'Ireland': 
+          style.opacity = 0; 
+          style.fillOpacity = 0; 
+          style.className = ''; break;
+          case 'Wales': 
+          style.fillColor = style.color = "#ff0000"; break;
         }
-    }).addTo(map);
 
-  },
-/*
-  showCellPhoneMasts: function(){
+        return style;
+	    },
+      onEachFeature: function (feature, layer) {
+        layer.bindPopup("<strong>"+feature.properties.name+"</strong>");
 
-    var app = this, map = app.map;
-
-    // TODO: remove dummy data, use real data
-    var littleton = L.marker([51.46598592502469,-0.5791854858398438]).bindPopup('O2 Mast 21312'),
-      denver    = L.marker([51.516007082492614, -0.5029678344726562]).bindPopup('Orange Mast DD21'),
-      aurora    = L.marker([51.47197425351888, -0.36289215087890625]).bindPopup('EE Mast AS0D2'),
-      golden    = L.marker([51.45999681055089, -0.5469131469726562]).bindPopup('Orange Mast OR213');
-
-    var masts = L.layerGroup([littleton, denver, aurora, golden]).addTo(map);
-
-    L.geoJson(data, {
-        onEachFeature: function (feature, layer) {
-          layer.bindPopup("<strong>"+feature.properties.title+"</strong><br />"+feature.properties.description);
-        }
-    }).addTo(map);
-
-  },
-*/
-  showGeography: function(type){
-
-    var app = this, map = app.map;
-
-    app.svg = d3.select(map.getPanes().overlayPane).append("svg"),
-    app.g = app.svg.append("g").attr("class", "leaflet-zoom-hide");
-
-   if(type === "wards"){
-
-      if(!app.subunits){
-        d3.json("subunits.json", function(error, subunits) {
-
-        app.subunits = subunits;
-        app.bounds = d3.geo.bounds(subunits.features);
-        app.path = d3.geo.path().projection(project);
-
-        app.feature = app.g.selectAll("path")
-              .data(subunits.features)
-            .enter().append("path")
-            .attr("class", "path subunits")
-            .attr("d", app.path);
-
-          map.on("viewreset", app.resetMap);
-          reset();
+        layer.on({
+          click:function(e){
+            app.setUserGeography({
+              type: 'country',
+              name: feature.properties.name,
+              data: feature,
+              layer: layer
+            });
+          }
         });
-      } else {
-          app.bounds = d3.geo.bounds(app.subunits.features);
-          app.path = d3.geo.path().projection(project);
-
-          app.feature = app.g.selectAll("path")
-                .data(app.subunits.features)
-              .enter().append("path")
-              .attr("class", "path subunits")
-              .attr("d", app.path);
-
-            map.on("viewreset", app.resetMap);
-            reset();
-
-      }  
-
-    } else if(type === "countries"){
-      if(!app.uk){
-        d3.json("uk.json", function(error, uk) {
-
-        app.uk = uk;
-        app.bounds = d3.geo.bounds(topojson.feature(uk, uk.objects.subunits));
-        app.path = d3.geo.path().projection(project);
-
-        app.feature = app.g.selectAll("path")
-              .data(topojson.feature(uk, uk.objects.subunits).features)
-            .enter().append("path")
-            .attr("class", "path countries")
-            .attr("d", app.path);
-
-          map.on("viewreset", app.resetMap);
-          reset();
-        });
-      } else {
-          app.bounds = d3.geo.bounds(topojson.feature(app.uk, app.uk.objects.subunits));
-          app.path = d3.geo.path().projection(project);
-
-          app.feature = app.g.selectAll("path")
-                .data(topojson.feature(app.uk, app.uk.objects.subunits).features)
-              .enter().append("path")
-              .attr("class", "path countries")
-              .attr("d", app.path);
-
-          map.on("viewreset", app.resetMap);
-          reset();
-
       }
+    })
+ 		.addTo(map);
+
+  },
+
+  showWards: function(){
+
+    var app = this, map = app.map;
+
+    var wards = app.data['wards'].data
+ 		app.layers['wards'] = 
+    L.geoJson(topojson.feature(wards, wards.objects.ukwards).features, {
+      style:{
+        className: 'ward'
+      }, 
+      onEachFeature: function (feature, layer) {
+          
+          layer.bindPopup("<strong>"+feature.properties.WD11NM+"</strong>");
+
+          layer.on({
+            click:function(){
+              app.setUserGeography({
+                type:'ward',
+                name: feature.properties.WD11NM,
+                data: feature,
+                layer: layer
+              });
+            }
+          });
+      }
+
+    })
+ 		.addTo(map);
+
+  },
+
+  showMarkers: function(id){
+
+    var app = this, map = app.map;
+
+    app.layers[id] = L.geoJson(app.data[id].data, {
+      onEachFeature: function(feature, layer){
+        //console.log(feature);
+        layer.bindPopup("<strong>"+feature.properties.title +
+            "</strong><br />"+feature.properties.description);      
+      }
+    }).addTo(map);
+  },
+
+  detectArea: function(){
+
+  	var app = this, map = app.map;
+
+    app.autoDetectEnabled = true;
+    $('#map i.target').show();
+
+  	var loc = map.getCenter(), 
+    lat = loc.lat, 
+    lon = loc.lng;
+
+  	$.getJSON('http://mapit.mysociety.org/point/4326/'+lon+','+lat, function(data){
+  		//console.log(data);
+  		app.autoDetectTemp = data;
+  		app.createDetectedAreaList(data);
+  	});
+
+  },
+
+  centerTarget: function(){
+    var mapWidth2 = $('#map').width()/2;
+    var iconWidth2 = $('#map i.target').width()/2;
+    var mapHeight2 = $('#map').height()/2;
+    var iconHeight2 = $('#map i.target').height()/2;
+    $('#map i.target')
+    .css('left', mapWidth2-iconWidth2+'px')
+    .css('top', mapHeight2-iconWidth2+'px');
+  },
+
+  disableAutoDetect: function(){
+    var app = this, map = app.map;
+    // destroy list
+    $('#auto-detect-list').removeClass('open');
+    //$('#auto-detect-list').empty().hide();
+    // remove layer from map
+
+    $.each(app.layers.detected, function(id, layer){
+      map.removeLayer(layer);
+    });
+
+    $('#map i.target').hide();
+    app.autoDetectEnabled = false;
+
+  },
+
+  createDetectedAreaList: function(areas){
+
+  	var app = this, map = app.map;
+
+  	var div = $('#auto-detect-list').empty();
+  	var ul = $('<ul class="nav nav-sidebar" />');
+
+  	div.append($('<h3 />').text("Nearby areas"));
+
+    var sortedAreas = app.objectToSortedArray(areas, 'name');
+
+    for (var i = 0; i < sortedAreas.length; i++) {
+      ul.append($('<li />').text(sortedAreas[i].name).attr('id', sortedAreas[i].id));
+    };
+
+    app.bindInteractionAutoDetectList(ul);
+
+  	div.append(ul);
+
+    div.addClass('open');
+
+  },
+
+  bindInteractionAutoDetectList:function(ul){
+
+    var app = this, map = app.map;
+
+    ul.find('li').mouseover(function(){
+      $(this).toggleClass('hovering');
+      $(this).append($('<i />').attr('class', 'fa fa-lg fa-spin fa-spinner'));
+      app.showDetectedAreaOnMap($(this).attr('id'));  
+    });
+
+    ul.find('li').mouseout(function(){
+      $(this).toggleClass('hovering');
+      $(this).find('i').remove();
+      if(!$(this).hasClass('enabled')){
+        map.removeLayer(app.layers.detected[$(this).attr('id')]); 
+      }
+    });   
+
+    ul.find('li').click(function(){
+      if(!$(this).hasClass('enabled')){
+
+        var chosenAreaID = $(this).attr('id');
+
+        ul.find('li.enabled').removeClass('enabled');
+        $.each(app.layers.detected, function(id, layer){
+          if(id !== chosenAreaID){
+            map.removeLayer(layer);
+          }
+        });
+
+        app.userArea = app.autoDetectTemp[chosenAreaID];
+        app.setUserGeography({
+          type: 'detected',
+          name: app.userArea.name,
+          data: app.userArea,
+          layer: app.layers.detected[chosenAreaID]
+        });
+      } else {
+        app.disableAutoDetect();
+      }
+
+      $(this).toggleClass("enabled");
+
+    });
+
+  },
+
+  showDetectedAreaOnMap: function(id){
+  	var app = this, map = app.map;
+
+    if(app.layers['detected'][""+id]){
+      app.layers['detected'][""+id].addTo(map);
+      $('li#'+id).find('i.fa-spin')
+      .removeClass('fa-spin fa-spinner')
+      .addClass('fa-check-circle');
+    } else {
+    	$.getJSON('http://mapit.mysociety.org/area/'+id+'.geojson', function(data){
+
+        app.layers['detected'][""+id] = L.geoJson(data, {
+          onEachFeature: function(feature, layer){
+            layer.on('click', function(){
+              app.setUserGeography({
+                type: 'detected',
+                name: app.autoDetectTemp[id].name,
+                data: feature,
+                layer: layer
+              });
+            });
+          }
+        }).addTo(map);
+
+        $('li#'+id).find('i.fa-spin')
+        .removeClass('fa-spin fa-spinner')
+        .addClass('fa-check-circle');
+
+    	});
     }
 
   },
 
+  setUserGeography: function(area){
+    var app = this, map = app.map;
+    app.userArea = area.data;
+
+    // Wipe any other user geography that's been set
+    var li = $('#data-layers ul li.userArea').empty().hide();
+    //console.log(li);
+    li.text(area.name).append($('<i class="fa fa-lg" />')).show();
+
+    map.fitBounds(area.layer.getBounds(), {padding: [0,0]});
+  },
+
+  removeUserGeography: function(){
+    var app = this;
+    delete app.userArea;
+    $('li.userArea').empty().hide();
+  },
 
   /*
     Sets map view based on string location e.g. "London" or "staines"
   */
   focusOnLocation: function(string){
 
-    var app = this, map = app.map, geocoder = app.geocoder;
+		var app = this, map = app.map, geocoder = app.geocoder;
 
-    string = string.replace(/ /g,'+');
+		string = string.replace(/ /g,'+');
 
-    if (geocoder) {
-        geocoder.geocode({ 'address': string+", United+Kingdom" }, function (results, status) {
-           if (status == google.maps.GeocoderStatus.OK) {
-              //console.log(results[0].geometry.location);
-              if(results.length > 0 && results[0].geometry && results[0].geometry.location){
-                var latlong = L.latLng(results[0].geometry.location.d, results[0].geometry.location.e);
-                map.setView(latlong, 11);
-              }
-           }
-           else {
-              console.log("Geocoding failed: " + status);
-           }
-        });
-     }
+		if (!geocoder) {
+			app.geocoder = new google.maps.Geocoder();
+			    app.focusOnLocation(string);    	
+		} else {
+			geocoder.geocode({ 'address': string+", United+Kingdom" }, function (results, status) {
+		       if (status == google.maps.GeocoderStatus.OK) {
+		          //console.log(results[0].geometry.location);
+		          if(results.length > 0 && results[0].geometry 
+                && results[0].geometry.location){
 
-    //$.get('https://maps.googleapis.com/maps/api/geocode/json?address=122+Flinders+St,+Darlinghurst,+NSW,+Australia&sensor=false&key=AIzaSyBKeLEYFHnhkhEl9gzt7fycrhvdK6Yp7l8')
-    //$.get('http://maps.googleapis.com/maps/api/geocode/json?address=Staines,+United+Kingdom&sensor=false');
-    /*
-    $.get('http://maps.googleapis.com/maps/api/geocode/json?address='+string+',+United+Kingdom&sensor=false', function(data){
-      if(data && data.geometry && data.geomtery.location){
-        var latlong = L.latLng(data.geomtery.location.lat, data.geomtery.location.lng);
-        map.setView(latlong);
-      }
-    })*/
-
-	},
-
-	addDataToMap: function(){
-	var app = this, map = app.map;
-
-	},
-
-	constructGeoJSON: function(rows){
-
-	var app = this, map = app.map;
-	var markers = [];
-
-	app.data.geoJson = {
-	  type: 'FeatureCollection',
-	  features: []
-	};
-
-	for (var i = rows.length - 1; i >= 0; i--) {
-	  
-	  var row = rows[i];
-	  //console.log(row);
-
-	    var marker = {
-	        // this feature is in the GeoJSON format: see geojson.org
-	        // for the full specification
-	        type: 'Feature',
-	        geometry: {
-	            type: 'Point',
-	            // coordinates here are in longitude, latitude order because
-	            // x, y is the standard for GeoJSON and many formats
-	            coordinates: [parseFloat(row["Longitude"]), parseFloat(row["Latitude"])]
-	        },
-	        properties: {
-	            title: '',
-	            description: ''
-	            // one can customize markers by adding simplestyle properties
-	            // http://mapbox.com/developers/simplestyle/
-	            // 'marker-size': 'small'
-	        }
-	    };
-
-	    app.data.geoJson.features.push(marker);
-
-	};
-
-	L.geoJson(app.data.geoJson, {
-	    onEachFeature: function (feature, layer) {
-	        //layer.bindPopup("<b>"+feature.properties.title+"</b><br />"+feature.properties.description);
-	    }
-	}).addTo(app.map);
-
-	//map.markerLayer.setGeoJSON(app.data.geoJson);
-	/*map.markerLayer.on('mouseover', function(e) {
-	    e.layer.openPopup();
-	});
-	map.markerLayer.on('mouseout', function(e) {
-	    e.layer.closePopup();
-	});*/ 
-
-	//console.log(app.data.geoJson);
+		            var latlong = L.latLng(results[0].geometry.location.d, 
+                  results[0].geometry.location.e);
+		            map.setView(latlong, 11);
+		          }
+		       }
+		       else {
+		          console.log("Geocoding failed: " + status);
+		       }
+		    });
+		}
 
 	},
 
@@ -516,7 +608,7 @@ var Feeder = {
 
 		var app = this;
 
-		$.each(app.data, function(category, feeds){
+		$.each(app.feedConfigs, function(category, feeds){
 			var ul = $('<ul class="nav nav-sidebar" />');
 
 			var icon = '';
@@ -529,10 +621,8 @@ var Feeder = {
 
 			$.each(feeds, function(feed, config){
 
-				console.log(config.type);
-
 				switch(config.type){
-					case 'point' : 
+					case 'points' : 
 						icon = 'fa-map-marker';
 						break;
 					case 'shapes' : 
@@ -543,51 +633,62 @@ var Feeder = {
 						break;
 				}
 
-				ul.append($('<li />').text(config.label).append($('<input />').attr('id', feed).attr('type', 'checkbox').attr('data-category', category)).append($('<i />').attr('class', 'fa fa-lg fa-fw '+icon)));
+				ul.append($('<li />').attr('id', feed)
+          .attr('data-category', category)
+          .text(config.label)
+          .append($('<span class="area btn btn-success btn-xs" />'))
+          .append($('<i />').attr('class', 'toggle fa fa-lg fa-circle-o'))
+          .append($('<i />').attr('class', 'fa fa-lg fa-fw '+icon))
+          );
 			});
 
+			if(category === "Geography"){
+				ul.append($('<li id="detect" class="detect" />')
+          .text('Auto-detect')
+          .append($('<i class="toggle fa fa-lg fa-circle-o" />'))
+          .append($('<i class="fa fa-lg fa-fw fa-crosshairs" />'))
+          );
+        ul.append($('<li class="userArea" />'));
+      }
+
 			$('#data-layers').append(ul);
+
 		});
 
 	},
 
-	data:{
-		'Geography': {
-			'countries':{
-				url: 'uk.json',
-				label: 'Countries'
-			},
-			'wards':{
-				url: 'subunits.json',
-				label: 'Wards'
-			}
-		},
-		'Floods': {
-			'warnings':{
-				url:'http://floodfeeder.cluefulmedia.com/api/floods/',
-				label: 'Flood warnings',
-				type: 'point',
-				dummy:[{"geometry":{"type":"Point","coordinates":[-0.5195557785325841,51.42974919545905,0]},"type":"Feature","properties":{"description":"<p>The River and Flooding forecast is as follows: River levels on the Thames in the Staines area are now slowly rising again in response to the rain that fell on Friday. River levels are currently expected to stop rising overnight on Tuesday and will be lower than the high levels we have seen in the last week and those seen in January 2003. The Environment Agency's incident room is currently open 24 hours a day  and we are monitoring the situation closely. Residents however, should remain vigilant.  If you believe you are in immediate danger call 999. The weather prospects are for a clear, dry evening with patchy showers expected to develop overnight and through Monday.</p>","title":"River Thames at Staines and Egham"}},{"geometry":{"type":"Point","coordinates":[-0.5442061744301574,51.44118820174332,0]},"type":"Feature","properties":{"description":"<p>The river and flooding forecast is as follows: River levels in the Datchet to Shepperton Green areas remain high but are slowly falling, however persistent showers forecast over Monday mean levels may rise again. Flooding of low lying land and roads are still possible. Severe Flood Warnings are in force for the area as widespread property flooding is still expected. The weather prospects are to expect a dry day on Sunday with showers forecast from Monday morning that will continue throughout the day.</p>","title":"River Thames from Datchet to Shepperton Green"}},{"geometry":{"type":"Point","coordinates":[-0.521536889996408,51.42530011905948,0]},"type":"Feature","properties":{"description":"<p>Groundwater levels in Egham are continuing to rise. Groundwater levels are expected to continue to rise over the next couple of days and we could see flooding in some areas. Further rain is forecast over the next few days and this could cause levels to remain high. Levels are expected to remain high for several weeks and impacts are expected to be similar to the flooding during the winter 2000/01. This message will be updated on Wednesday 19 February 2014.</p>","title":"Groundwater flooding in Egham"}}]
-			},
-			'alerts':{
-				url:'http://floodfeeder.cluefulmedia.com/api/floods/',
-				label: 'Flood alerts',
-				type: 'point',
-				dummy:[{"geometry":{"type":"Point","coordinates":[-0.52987576,51.44907892,0]},"type":"Feature","properties":{"description":"<p>The River and Flooding forecast is as follows: River levels on the Thames in the Staines area are now slowly rising again in response to the rain that fell on Friday. River levels are currently expected to stop rising overnight on Tuesday and will be lower than the high levels we have seen in the last week and those seen in January 2003. The Environment Agency's incident room is currently open 24 hours a day  and we are monitoring the situation closely. Residents however, should remain vigilant.  If you believe you are in immediate danger call 999. The weather prospects are for a clear, dry evening with patchy showers expected to develop overnight and through Monday.</p>","title":"River Thames at Staines and Egham"}},{"geometry":{"type":"Point","coordinates":[-0.5498972,51.46202948,0]},"type":"Feature","properties":{"description":"<p>The river and flooding forecast is as follows: River levels in the Datchet to Shepperton Green areas remain high but are slowly falling, however persistent showers forecast over Monday mean levels may rise again. Flooding of low lying land and roads are still possible. Severe Flood Warnings are in force for the area as widespread property flooding is still expected. The weather prospects are to expect a dry day on Sunday with showers forecast from Monday morning that will continue throughout the day.</p>","title":"River Thames from Datchet to Shepperton Green"}},{"geometry":{"type":"Point","coordinates":[-0.5378292,51.456789876,0]},"type":"Feature","properties":{"description":"<p>Groundwater levels in Egham are continuing to rise. Groundwater levels are expected to continue to rise over the next couple of days and we could see flooding in some areas. Further rain is forecast over the next few days and this could cause levels to remain high. Levels are expected to remain high for several weeks and impacts are expected to be similar to the flooding during the winter 2000/01. This message will be updated on Wednesday 19 February 2014.</p>","title":"Groundwater flooding in Egham"}}]
-			}
-		},
-		'Infrastructure': {
-			'mobilephonemasts':{
-				url:'',
-				label: 'Mobile phone masts',
-				type: 'point',
-				dummy:[{"geometry":{"type":"Point","coordinates":[51.46598592502469,-0.5791854858398438,0]},"type":"Feature","properties":{"description":"","title":"O2 Mast 21312"}},{"geometry":{"type":"Point","coordinates":[51.516007082492614, -0.5029678344726562,0]},"type":"Feature","properties":{"description":"","title":"Orange Mast DD21"}},{"geometry":{"type":"Point","coordinates":[51.47197425351888, -0.36289215087890625,0]},"type":"Feature","properties":{"description":"","title":"EE Mast AS0D2"}},{"geometry":{"type":"Point","coordinates":[51.45999681055089, -0.5469131469726562,0]},"type":"Feature","properties":{"description":"","title":"Orange Mast OR213"}}]
-			}
-		}
-	}
+  loadFeedConfigs: function(callback){
+    var app = this;
+    $.getJSON('feedConfigs.json', function(data){
+      app.feedConfigs = data;
+      callback();
+    });
+  },
+
+  objectToSortedArray: function(object, key){
+
+    var sortable = [];
+    
+    $.each(object, function(key, item){
+      sortable.push(item);
+    });
+
+    //console.log(sortable);
+
+    return sortable.sort(function(a, b) {
+      if(a[key] < b[key]) return -1;
+      if(a[key] > b[key]) return 1;
+      return 0;
+    });;
+  }
 
 };
 
 (function(){
   Feeder.init();
+
+  $(window).resize(function(){
+    Feeder.centerTarget();
+  });
+
 }());

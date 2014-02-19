@@ -1,0 +1,194 @@
+{
+   "Geography":{
+      "countries":{
+         "url":"countries.json",
+         "label":"Countries",
+         "type":"geography",
+         "description": "Shapes files of UK country borders from Ordnance Survey, converted to GeoJSON, and then compressed to TopoJSON."
+      },
+      "wards":{
+         "url":"ukwards.topo.json",
+         "label":"Wards",
+         "type":"geography",
+         "description": "Shapes files of UK wards from Ordnance Survey, converted to GeoJSON, and then compressed to TopoJSON."
+      }
+   },
+   "Floods":{
+      "warnings":{
+         "url":"http://floodfeeder.cluefulmedia.com/api/floods/",
+         "label":"Flood warnings",
+         "type":"points",
+         "description": "JSON served through Shoothill's API. We convert it into geoJSON to add to our map.",
+         "dummy":[
+            {
+               "geometry":{
+                  "type":"Point",
+                  "coordinates":[
+                     -0.5195557785325841,
+                     51.42974919545905,
+                     0
+                  ]
+               },
+               "type":"Feature",
+               "properties":{
+                  "description":"<p>The River and Flooding forecast is as follows: River levels on the Thames in the Staines area are now slowly rising again in response to the rain that fell on Friday. River levels are currently expected to stop rising overnight on Tuesday and will be lower than the high levels we have seen in the last week and those seen in January 2003. The Environment Agency's incident room is currently open 24 hours a day  and we are monitoring the situation closely. Residents however, should remain vigilant.  If you believe you are in immediate danger call 999. The weather prospects are for a clear, dry evening with patchy showers expected to develop overnight and through Monday.</p>",
+                  "title":"River Thames at Staines and Egham"
+               }
+            },
+            {
+               "geometry":{
+                  "type":"Point",
+                  "coordinates":[
+                     -0.5442061744301574,
+                     51.44118820174332,
+                     0
+                  ]
+               },
+               "type":"Feature",
+               "properties":{
+                  "description":"<p>The river and flooding forecast is as follows: River levels in the Datchet to Shepperton Green areas remain high but are slowly falling, however persistent showers forecast over Monday mean levels may rise again. Flooding of low lying land and roads are still possible. Severe Flood Warnings are in force for the area as widespread property flooding is still expected. The weather prospects are to expect a dry day on Sunday with showers forecast from Monday morning that will continue throughout the day.</p>",
+                  "title":"River Thames from Datchet to Shepperton Green"
+               }
+            },
+            {
+               "geometry":{
+                  "type":"Point",
+                  "coordinates":[
+                     -0.521536889996408,
+                     51.42530011905948,
+                     0
+                  ]
+               },
+               "type":"Feature",
+               "properties":{
+                  "description":"<p>Groundwater levels in Egham are continuing to rise. Groundwater levels are expected to continue to rise over the next couple of days and we could see flooding in some areas. Further rain is forecast over the next few days and this could cause levels to remain high. Levels are expected to remain high for several weeks and impacts are expected to be similar to the flooding during the winter 2000/01. This message will be updated on Wednesday 19 February 2014.</p>",
+                  "title":"Groundwater flooding in Egham"
+               }
+            }
+         ]
+      },
+      "alerts":{
+         "url":"http://floodfeeder.cluefulmedia.com/api/floods/",
+         "label":"Flood alerts",
+         "type":"points",
+         "description": "JSON served through Shoothill's API. We convert it into geoJSON to add to our map.",
+         "dummy":[
+            {
+               "geometry":{
+                  "type":"Point",
+                  "coordinates":[
+                     -0.52987576,
+                     51.44907892,
+                     0
+                  ]
+               },
+               "type":"Feature",
+               "properties":{
+                  "description":"<p>The River and Flooding forecast is as follows: River levels on the Thames in the Staines area are now slowly rising again in response to the rain that fell on Friday. River levels are currently expected to stop rising overnight on Tuesday and will be lower than the high levels we have seen in the last week and those seen in January 2003. The Environment Agency's incident room is currently open 24 hours a day  and we are monitoring the situation closely. Residents however, should remain vigilant.  If you believe you are in immediate danger call 999. The weather prospects are for a clear, dry evening with patchy showers expected to develop overnight and through Monday.</p>",
+                  "title":"River Thames at Staines and Egham"
+               }
+            },
+            {
+               "geometry":{
+                  "type":"Point",
+                  "coordinates":[
+                     -0.5498972,
+                     51.46202948,
+                     0
+                  ]
+               },
+               "type":"Feature",
+               "properties":{
+                  "description":"<p>The river and flooding forecast is as follows: River levels in the Datchet to Shepperton Green areas remain high but are slowly falling, however persistent showers forecast over Monday mean levels may rise again. Flooding of low lying land and roads are still possible. Severe Flood Warnings are in force for the area as widespread property flooding is still expected. The weather prospects are to expect a dry day on Sunday with showers forecast from Monday morning that will continue throughout the day.</p>",
+                  "title":"River Thames from Datchet to Shepperton Green"
+               }
+            },
+            {
+               "geometry":{
+                  "type":"Point",
+                  "coordinates":[
+                     -0.5378292,
+                     51.456789876,
+                     0
+                  ]
+               },
+               "type":"Feature",
+               "properties":{
+                  "description":"<p>Groundwater levels in Egham are continuing to rise. Groundwater levels are expected to continue to rise over the next couple of days and we could see flooding in some areas. Further rain is forecast over the next few days and this could cause levels to remain high. Levels are expected to remain high for several weeks and impacts are expected to be similar to the flooding during the winter 2000/01. This message will be updated on Wednesday 19 February 2014.</p>",
+                  "title":"Groundwater flooding in Egham"
+               }
+            }
+         ]
+      }
+   },
+   "Infrastructure":{
+      "mobilephonemasts":{
+         "url":"",
+         "label":"Mobile phone masts",
+         "type":"points",
+         "description": "CSV data provided by Ofcom. George van den Driessche converted the site locations to latitude &amp; longitude, and we've converted to geoJSON.",
+         "dummy":[
+            {
+               "geometry":{
+                  "type":"Point",
+                  "coordinates":[
+                     -0.5791854858398438,
+                     51.46598592502469,
+                     0
+                  ]
+               },
+               "type":"Feature",
+               "properties":{
+                  "description":"",
+                  "title":"O2 Mast 21312"
+               }
+            },
+            {
+               "geometry":{
+                  "type":"Point",
+                  "coordinates":[
+                     -0.5029678344726562,
+                     51.516007082492614,
+                     0
+                  ]
+               },
+               "type":"Feature",
+               "properties":{
+                  "description":"",
+                  "title":"Orange Mast DD21"
+               }
+            },
+            {
+               "geometry":{
+                  "type":"Point",
+                  "coordinates":[
+                     -0.36289215087890625,
+                     51.47197425351888,
+                     0
+                  ]
+               },
+               "type":"Feature",
+               "properties":{
+                  "description":"",
+                  "title":"EE Mast AS0D2"
+               }
+            },
+            {
+               "geometry":{
+                  "type":"Point",
+                  "coordinates":[
+                     -0.5469131469726562,
+                     51.45999681055089,
+                     0
+                  ]
+               },
+               "type":"Feature",
+               "properties":{
+                  "description":"",
+                  "title":"Orange Mast OR213"
+               }
+            }
+         ]
+      }
+   }
+}
