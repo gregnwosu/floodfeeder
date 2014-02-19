@@ -15,9 +15,8 @@
     <!-- Custom styles for this template -->
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/leaflet.css" rel="stylesheet">
-
-    <!-- Just for debugging purposes. Don't actually copy this line! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <link href="css/styles.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -26,40 +25,7 @@
     <![endif]-->
 
 </head>
-<style>
-#map {
-width: 100%;
-height: 500px;
-}
-#data-layers ul {
-  margin: 0;
-}
-#data-layers ul li input {
-float: right;
-margin-right: 25px;
-}
-#data-layers ul li button {
-  margin-top: 10px;
-}
-.countries {
-  fill: rgba(111, 94, 247, 0.5);
-  stroke: #000000;
-  cursor: pointer;
-}
-.countries:hover {
-  fill: rgba(111, 94, 247, 0.8);
-  stroke: #FFFFFF;
-}
-.subunits {
-  fill: rgba(200, 20, 247, 0.5);
-  stroke: #000000;
-  cursor: pointer;
-}
-.subunits:hover {
-  fill: rgba(240, 60, 247, 0.8);
-  stroke: #FFFFFF;
-}
-</style>
+
 <body>
 
   <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -74,12 +40,19 @@ margin-right: 25px;
         <a class="navbar-brand" href="#">Flood feeder</a>
       </div>
       <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="#">About</a></li>
-        </ul>
         <form class="navbar-form navbar-right">
-          <input id="search" class="form-control" placeholder="Search..." type="text">
-        </form>
+          <div class="input-group">
+            <input id="search" class="form-control" placeholder="Zoom to..." type="text">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button">Go!</button>
+            </span>
+          </div><!-- /input-group -->
+        </form>        
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#" data-toggle="modal" data-target="#aboutModal">About</a></li>
+          <li><button type="button" class="json btn btn-default btn-sm">EXPORT JSON</button></li>
+          <li><button type="button" class="geojson btn btn-primary btn-sm">EXPORT GEOJSON</button></li>
+        </ul>
       </div>
     </div>
   </div>
@@ -87,7 +60,7 @@ margin-right: 25px;
   <div class="container-fluid">
     <div class="row">
       <div id="data-layers" class="col-sm-3 col-md-2 sidebar">
-        <ul class="nav nav-sidebar">
+        <!--ul class="nav nav-sidebar">
           <li><h3>Geography</h3></li>
           <li>Countries<input id="countries" type="checkbox" /></li>
           <li>Wards<input id="wards" type="checkbox" /></li>   
@@ -100,14 +73,10 @@ margin-right: 25px;
         </ul>
         <ul class="nav nav-sidebar">
           <li><h3>Infrastructure data</h3></li>
-          <li>Cellphone masts<input id="cellphonemasts" type="checkbox" /></li>
+          <li>Mobile phone masts<input id="mobilephonemasts" type="checkbox" /></li>
           <li>Transport data<input  id="transportdata" type="checkbox" /></li>
           <li>NHS data<input id="nhsdata" type="checkbox" /></li>       
-        </ul>
-        <ul class="nav nav-sidebar">
-          <li><button type="button" class="btn btn-default btn-lg">EXPORT JSON</button></li>
-          <li><button type="button" class="btn btn-primary btn-lg">EXPORT GEOJSON</button></li>
-        </ul>
+        </ul-->
       </div>
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
@@ -117,6 +86,43 @@ margin-right: 25px;
       </div>
     </div>
   </div>
+
+  <div class="col-sm-3 col-md-2 sidebar" id="auto-detect-list">
+  </div>
+
+
+  <!-- About modal -->
+  <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="aboutModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="aboutModalLabel">About</h4>
+        </div>
+        <div class="modal-body">
+        
+          <p>Flood Feeder is a tool to aggregate flood-related datasets (spatial or non-spatial), and spit them out as GeoJSON/JSON (a friendly and easy to use data format for developers to work with). This makes the development process quicker, the data becomes easier to grasp and increases the chances of useful apps and visualisations being developed.</p>
+
+          <p>The idea was conceived and partially implemented at <a href="https://hackpad.com/UK-Flood-Help-February-2014-QFpKPE5Wy6s" target="_blank">#floodhack</a> - a relief effort to help those affected by the flooding in the UK. Flood feeder won a hosting package from Google and a development grant from Nominet Trust.</p>
+
+          <p>It offers geographic granularity, allowing you to aggregate data for a country, a ward, a town or another type of geographic area.</p>
+
+          <p>The feeds available are presented as a list of geographic layers, flood related data feeds and other types of datasets - each to be included or excluded from your aggregated feed, which - (if they contain geographic data such as point locations [cellphone masts, river guages] or shapes [flood areas, cellphone coverages]) - can be previewed live on the map.</p>
+
+          <p>Once finished building your feed, you can export it as JSON/GeoJSON.</p>
+
+          <p><a href="https://docs.google.com/document/d/12WiAJih7f5ZDiqjJ6Qqoafz_YKjDlStWp2INE9a3Uqw" target="_blank">Documentation</a>.</p>
+
+          <p>Built by <a href="https://twitter.com/danpaulsmith" target="_blank">Dan Smith</a>, <a href="https://twitter.com/brendanquinn" target="_blank">Brendan Quinn</a> and <a href="https://twitter.com/greg_nwosu" target="_blank">Greg Nwosu</a>.</p>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <!-- Bootstrap core JavaScript
   ================================================== -->
@@ -128,390 +134,7 @@ margin-right: 25px;
   <script src="scripts/d3.geo.tile.v0.min.js"></script>
   <script src="scripts/leaflet.js"></script>
   <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
-
-  <script type="text/javascript">     
-     var geocoder = new google.maps.Geocoder();
-  </script>
-<script>
-
-// grab data
-
-// combine shapes and warning
-
-// add / remove stuff
-
-// spit out geojson
-
-// upload somewhere
-
-
-var Feeder = {
-
-data:{
-  url: ""
-},
-
-mapConfig: {
-  projections:{}
-},
-
-map:{},
-
-init: function(){
-  var app = this;
-
-  app.setupMap();
-  app.bindInteraction();
-
-  //app.loadData(function(data){
-    //app.data.rows = rows;
-    //app.addDataToMap(rows);
-    //app.bindInteraction();
-  //});
-},
-
-setupMap: function(){
-  var app = this;
-
-  app.mapConfig.width = $('#map').width();
-  app.mapConfig.height = $('#map').height();   
-
-  /*app.mapConfig.projections["mercator"] = d3.geo.mercator()
-    .center([0, 60])
-    .scale(100)
-    .rotate([0,0]);*/
-
-  // set up the map
-  app.map = new L.Map('map');
-
-  // create the tile layer with correct attribution
-  var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-  var osmAttrib='Map data © OpenStreetMap contributors';
-  var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 20, attribution: osmAttrib});   
-
-  // start the map in South-East England
-  app.map.setView(new L.LatLng(52.01193653675363, -0.3240966796875), 7);
-  app.map.addLayer(osm);
-
-},
-
-loadData: function(callback){
-
-  var app = this;
-
-  /*d3.csv(app.data.url)
-    .get(function(error, rows) { 
-      callback(rows);
-    });
-  */
-},
-
-
-bindInteraction: function(){
-
-  var app = this, map = app.map;
-
-  $('#data-layers ul li input').click(function(){
-    if($(this).is(':checked')){
-      // on 
-      if($(this).attr('id') === 'warnings' || $(this).attr('id') === 'alerts'){
-      var loc = map.getCenter();
-        app.requestData({
-          lat: loc.lat,
-          lon: loc.lng,
-          radius: 50
-        }, app.addDataToMap);
-      } else if($(this).attr('id') === 'countries'){
-        app.showGeography('countries');
-      } else if($(this).attr('id') === 'wards'){
-        app.showGeography('wards');
-      } else if($(this).attr('id') === 'cellphonemasts'){
-        app.showCellPhoneMasts();
-      }
-    } else {
-      // off
-      
-      if(false){
-
-      } else if($(this).attr('id') === 'countries'){
-        $('#map').find('svg').remove();
-      } else if($(this).attr('id') === 'wards'){
-        $('#map').find('svg').remove();
-      }
-
-    }
-  });
-
-  $('#search').keypress(function(e) {
-    if(e.which == 13) {
-        e.preventDefault();
-        app.focusOnLocation($(this).val());
-    }
-  });
-
-  $('.countries').on('click', function(){
-    console.log("clicked country");
-  });
-
-  $('.btn-default').click(function(){
-      window.location.href = 'http://floodfeeder.cluefulmedia.com/subunits.json';
-  });
-  $('.btn-primary').click(function(){
-      window.location.href = 'http://floodfeeder.cluefulmedia.com/uk.json';
-  });
-
-
-},
-
-showCellPhoneMasts: function(){
-
-  var app = this, map = app.map;
-
-  var littleton = L.marker([51.46598592502469,-0.5791854858398438]).bindPopup('O2 Mast 21312'),
-    denver    = L.marker([51.516007082492614, -0.5029678344726562]).bindPopup('Orange Mast DD21'),
-    aurora    = L.marker([51.47197425351888, -0.36289215087890625]).bindPopup('EE Mast AS0D2'),
-    golden    = L.marker([51.45999681055089, -0.5469131469726562]).bindPopup('Orange Mast OR213');
-
-  var masts = L.layerGroup([littleton, denver, aurora, golden]).addTo(map);
-
-},
-
-showGeography: function(type){
-
-  var app = this, map = app.map;
-
-  app.svg = d3.select(map.getPanes().overlayPane).append("svg"),
-  app.g = app.svg.append("g").attr("class", "leaflet-zoom-hide");
-
- if(type === "wards"){
-
-    if(!app.subunits){
-      d3.json("subunits.json", function(error, subunits) {
-
-      app.subunits = subunits;
-      app.bounds = d3.geo.bounds(subunits.features);
-      app.path = d3.geo.path().projection(project);
-
-      app.feature = app.g.selectAll("path")
-            .data(subunits.features)
-          .enter().append("path")
-          .attr("class", "path subunits")
-          .attr("d", app.path);
-
-        map.on("viewreset", reset);
-        reset();
-      });
-    } else {
-        app.bounds = d3.geo.bounds(app.subunits.features);
-        app.path = d3.geo.path().projection(project);
-
-        app.feature = app.g.selectAll("path")
-              .data(app.subunits.features)
-            .enter().append("path")
-            .attr("class", "path subunits")
-            .attr("d", app.path);
-
-          map.on("viewreset", reset);
-          reset();
-
-    }  
-
-
-  } else if(type === "countries"){
-    if(!app.uk){
-      d3.json("uk.json", function(error, uk) {
-
-      app.uk = uk;
-      app.bounds = d3.geo.bounds(topojson.feature(uk, uk.objects.subunits));
-      app.path = d3.geo.path().projection(project);
-
-      app.feature = app.g.selectAll("path")
-            .data(topojson.feature(uk, uk.objects.subunits).features)
-          .enter().append("path")
-          .attr("class", "path countries")
-          .attr("d", app.path);
-
-        map.on("viewreset", reset);
-        reset();
-      });
-    } else {
-        app.bounds = d3.geo.bounds(topojson.feature(app.uk, app.uk.objects.subunits));
-        app.path = d3.geo.path().projection(project);
-
-        app.feature = app.g.selectAll("path")
-              .data(topojson.feature(app.uk, app.uk.objects.subunits).features)
-            .enter().append("path")
-            .attr("class", "path countries")
-            .attr("d", app.path);
-
-          map.on("viewreset", reset);
-          reset();
-
-    }
-  }
-
-},
-
-
-
-
-
-
-
-
-
-
-
-focusOnLocation: function(string){
-
-  var app = this, map = app.map;
-
-  string = string.replace(/ /g,'+');
-
-
-  if (geocoder) {
-      geocoder.geocode({ 'address': string+", United+Kingdom" }, function (results, status) {
-         if (status == google.maps.GeocoderStatus.OK) {
-
-            //console.log(results[0].geometry.location);
-
-            if(results.length > 0 && results[0].geometry && results[0].geometry.location){
-              var latlong = L.latLng(results[0].geometry.location.d, results[0].geometry.location.e);
-              map.setView(latlong, 11);
-            }
-
-         }
-         else {
-            console.log("Geocoding failed: " + status);
-         }
-      });
-   }
-
-
-
-  //$.get('https://maps.googleapis.com/maps/api/geocode/json?address=122+Flinders+St,+Darlinghurst,+NSW,+Australia&sensor=false&key=AIzaSyBKeLEYFHnhkhEl9gzt7fycrhvdK6Yp7l8')
-  //$.get('http://maps.googleapis.com/maps/api/geocode/json?address=Staines,+United+Kingdom&sensor=false');
-  /*
-  $.get('http://maps.googleapis.com/maps/api/geocode/json?address='+string+',+United+Kingdom&sensor=false', function(data){
-    if(data && data.geometry && data.geomtery.location){
-      var latlong = L.latLng(data.geomtery.location.lat, data.geomtery.location.lng);
-      map.setView(latlong);
-    }
-  })*/
-
-},
-
-requestData: function(params, callback){
-
-  var app = this, map = app.map;
-
-  $.getJSON('http://floodfeeder.cluefulmedia.com/api/floods/?lat='+params.lat+"&lon="+params.lon+"&radius=50", function(data){
-    //console.log(data);
-    app.markerData = data;
-    //L.geoJson(data).addTo(map);
-
-    L.geoJson(data, {
-      onEachFeature: function (feature, layer) {
-        layer.bindPopup("<strong>"+feature.properties.title+"</strong><br />"+feature.properties.description);
-      }
-    }).addTo(map);
-
-  });
-  //console.log('requesting data', params)
-
-},
-
-addDataToMap: function(){
-  var app = this, map = app.map;
-
-},
-
-constructGeoJSON: function(rows){
-
-  var app = this, map = app.map;
-  var markers = [];
-
-  app.data.geoJson = {
-    type: 'FeatureCollection',
-    features: []
-  };
-
-  for (var i = rows.length - 1; i >= 0; i--) {
-    
-    var row = rows[i];
-    //console.log(row);
-
-      var marker = {
-          // this feature is in the GeoJSON format: see geojson.org
-          // for the full specification
-          type: 'Feature',
-          geometry: {
-              type: 'Point',
-              // coordinates here are in longitude, latitude order because
-              // x, y is the standard for GeoJSON and many formats
-              coordinates: [parseFloat(row["Longitude"]), parseFloat(row["Latitude"])]
-          },
-          properties: {
-              title: '',
-              description: ''
-              // one can customize markers by adding simplestyle properties
-              // http://mapbox.com/developers/simplestyle/
-              // 'marker-size': 'small'
-          }
-      };
-
-      app.data.geoJson.features.push(marker);
-  
-  };
-
-  L.geoJson(app.data.geoJson, {
-      onEachFeature: function (feature, layer) {
-          //layer.bindPopup("<b>"+feature.properties.title+"</b><br />"+feature.properties.description);
-      }
-  }).addTo(app.map);
-
-  //map.markerLayer.setGeoJSON(app.data.geoJson);
-  /*map.markerLayer.on('mouseover', function(e) {
-      e.layer.openPopup();
-  });
-  map.markerLayer.on('mouseout', function(e) {
-      e.layer.closePopup();
-  });*/ 
-
-  //console.log(app.data.geoJson);
-
-}
-
-};
-
-(function($){
-  Feeder.init();
-}());
-
-  // Reposition the SVG to cover the features.
-  function reset() {
-    var bottomLeft = project(Feeder.bounds[0]),
-        topRight = project(Feeder.bounds[1]);
-
-    Feeder.svg.attr("width", topRight[0] - bottomLeft[0])
-        .attr("height", bottomLeft[1] - topRight[1])
-        .style("margin-left", bottomLeft[0] + "px")
-        .style("margin-top", topRight[1] + "px");
-
-    Feeder.g.attr("transform", "translate(" + -bottomLeft[0] + "," + -topRight[1] + ")");
-
-    Feeder.feature.attr("d", Feeder.path);
-  }
-
-  // Use Leaflet to implement a D3 geographic projection.
-  function project(x) {
-
-    var point = Feeder.map.latLngToLayerPoint(new L.LatLng(x[1], x[0]));
-    return [point.x, point.y];
-  } 
-
-</script>  
-
+  <script src="scripts/floodfeeder2.js"></script>
 
 </body>
 </html>

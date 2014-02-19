@@ -1,0 +1,133 @@
+/*
+	Flood feeder - main styles 
+*/
+.navbar ul li button {
+  margin: 10px 20px 10px 0;
+}
+#search {
+	position: relative;
+}
+#search:before {
+    content: "&#xf05b";
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+/*--adjust as necessary--*/
+    color: #000;
+    font-size: 18px;
+    padding-right: 0.5em;
+    position: absolute;
+    top: 10px;
+    left: 0;
+}
+.main {
+  bottom: 0;
+  position: absolute;
+  top: 51px;
+}
+.sidebar {
+    padding: 0;
+}
+#auto-detect-list {
+	display: none;
+	left:auto;
+	right:0;
+}
+#auto-detect-list > h3 {
+  margin-left: 14px;
+}
+#auto-detect-list ul {
+  margin: 5px;
+}
+#auto-detect-list ul li {
+  cursor: pointer;
+  padding: 2px 10px;
+}
+#auto-detect-list ul li:hover {
+  background: #FFFFFF;
+}
+#auto-detect-list ul li.enabled {
+  background: none repeat scroll 0 0 #428BCA;
+  color: #FFFFFF;
+}
+#auto-detect-list ul li.enabled i {
+  margin-right: 5px;
+  position: absolute;
+  right: 0;
+  top: 6px;
+}
+#auto-detect-list button {
+  bottom: 10px;
+  left: 10px;
+  margin: 15px 0 15px 15px;
+  position: absolute;
+}
+#auto-detect-list button.cancel {
+  left: auto;
+  right: 20px;
+}
+#map {
+	width: 100%;
+	height: 100%;
+}
+#data-layers ul {
+  margin: 0;
+}
+#data-layers ul li {
+  cursor: pointer;
+  margin-bottom: 1px;
+  padding: 5px 10px;
+}
+#data-layers ul li:hover {
+  background: none repeat scroll 0 0 #FFFFFF;
+}
+#data-layers ul li.enabled {
+  background: none repeat scroll 0 0 #428BCA;
+  color: #FFFFFF;
+}
+#data-layers ul li.category {
+  background: none repeat scroll 0 0 #000000;
+  border-bottom: 1px solid #DDDDDD;
+  color: #FFFFFF;
+  cursor: auto;
+  margin-bottom: 0;
+  margin-top: 20px;
+  padding: 5px 10px;
+}
+#data-layers ul li.category h3 {
+  font-size: 20px;
+  margin: 0;
+}
+#data-layers ul li.category:hover{
+  background: none repeat scroll 0 0 #000000;
+}
+#data-layers ul li input {
+  float: right;
+  margin-left: 10px;
+}
+#data-layers ul li i {
+  float: right;
+  line-height: 22px;
+}
+#data-layers ul li i.toggle {
+  margin-left: 5px;
+}
+.countries {
+  fill: rgba(111, 94, 247, 0.5);
+  stroke: #000000;
+  cursor: pointer;
+}
+.countries:hover {
+  fill: rgba(111, 94, 247, 0.8);
+  stroke: #FFFFFF;
+}
+.subunits {
+  fill: rgba(200, 20, 247, 0.5);
+  stroke: #000000;
+  cursor: pointer;
+}
+.subunits:hover {
+  fill: rgba(240, 60, 247, 0.8);
+  stroke: #FFFFFF;
+}
