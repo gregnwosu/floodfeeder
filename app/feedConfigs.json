@@ -1,5 +1,87 @@
 {
-   "Geography":{
+   "Maps":{
+       "osm": {
+         "url":"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+         "label":"OpenStreetMap",
+         "type":"tiles",
+         "attribution": "OpenStreetMap contributors",
+         "description": "OpenStreetMap tile layer",
+         "dummy":[]         
+      },
+      "aerial":{
+         "url": "http://otile1.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png",
+         "label":"Aerial",
+         "type":"tiles",
+         "attribution": "MapQuest and OpenStreetMap contributors",
+         "description": "Aerial map provided by MapQuest",
+         "dummy":[]          
+      },      
+       "transport": {
+         "url":"http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png",
+         "label":"Transport",
+         "type":"tiles",
+         "attribution": "Thunderforest and OpenStreetMap contributors",
+         "description": "Transport tile layer",
+         "dummy":[]         
+      },
+      "landscape": {
+         "url":"http://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png",
+         "label":"Landscape",
+         "type":"tiles",
+         "attribution": "Thunderforest and OpenStreetMap contributors",
+         "description": "Landscape tile layer",
+         "dummy":[]         
+      },
+      "outdoors": {
+         "url":"http://{s}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png",
+         "label":"Outdoors",
+         "type":"tiles",
+         "attribution": "Thunderforest and OpenStreetMap contributors",
+         "description": "Outdoors tile layer",
+         "dummy":[]         
+      },
+      "toner": {
+         "url":"http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",
+         "label":"Print friendly",
+         "type":"tiles",
+         "attribution": "Stamen and OpenStreetMap contributors",
+         "description": "Toner map tile layer",
+         "dummy":[]         
+      },
+      "watercolor": {
+         "url":"http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png",
+         "label":"Watercolor",
+         "type":"tiles",
+         "attribution": "Stamen and OpenStreetMap contributors",
+         "description": "Artistic map tile layer",
+         "dummy":[]         
+      },
+      "osooc1": {
+         "url":"http://{s}.ooc.openstreetmap.org/npe/{z}/{x}/{y}.png",
+         "label":"OS 1945-55 (Patchy)",
+         "type":"tiles",
+         "attribution": "Ordnance Survey maps from <a href='http://www.openstreetmap.org/'>OpenStreetMap</a>, <a href='http://creativecommons.org/licenses/by-nc/2.5/'>CC-BY-NC</a>",
+         "description": "Ordnance Survey 'Out-of-copyright' - New Popular Edition (1945-55, 1:50k)",
+         "dummy":[]         
+      },
+      "osooc2": {
+         "url":"http://{s}.ooc.openstreetmap.org/os1/{z}/{x}/{y}.jpg",
+         "label":"OS 1946-60 (Patchy)",
+         "type":"tiles",
+         "attribution": "Ordnance Survey maps from <a href='http://www.openstreetmap.org/'>OpenStreetMap</a>, <a href='http://creativecommons.org/licenses/by-nc/2.5/'>CC-BY-NC</a>",
+         "description": "Ordnance Survey 'Out-of-copyright' - 1st Edition (1946-60, 1:25k)",
+         "dummy":[]         
+      },  
+      "osooc3": {
+         "url":"http://{s}.ooc.openstreetmap.org/os7/{z}/{x}/{y}.jpg",
+         "label":"OS 1947-60 (Patchy)",
+         "type":"tiles",
+         "attribution": "Ordnance Survey maps from <a href='http://www.openstreetmap.org/'>OpenStreetMap</a>, <a href='http://creativecommons.org/licenses/by-nc/2.5/'>CC-BY-NC</a>",
+         "description": "Ordnance Survey 'Out-of-copyright' - 7th Series (1947-60, 1:50k)",
+         "dummy":[]         
+      }      
+   },
+   "Areas":{
       "countries":{
          "url":"countries.json",
          "label":"Countries",

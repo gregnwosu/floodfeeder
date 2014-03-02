@@ -5,7 +5,14 @@
 var Feeder = {
 
 	mapConfig: {
-    tiles:{},
+    tiles:{
+      osm: {
+        url:'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+      },
+      transport: {
+        url:'http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png'
+      }
+    },
 		projections:{}
 	},
 
@@ -14,52 +21,92 @@ var Feeder = {
 	data: {},
 
 	layers: {
-    tiles:{},
 		detected:{}
 	},
 
   init: function(){
     var app = this;
 
+    app.setupMap();
+
+    // start the map in South-East England
+    //app.map.setView(new L.LatLng(52.01193653675363, -0.3240966796875), 7);
+
+    app.centerTarget();
+
     app.loadFeedConfigs(function(){
-      app.centerTarget();
       app.createFeedList();
-      app.setupMap();
       app.bindInteraction();
     });
 
   },
 
-  setupMap: function(){
+  setupMap: function(tiles){
     var app = this;
+
+    $('#map').empty();
 
     app.mapConfig.width = $('#map').width();
     app.mapConfig.height = $('#map').height();   
 
     // set up the map
-    app.map = new L.Map('map');
+    // app.map = new L.Map('map');
 
     // create the tile layer with correct attribution
-    /*var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-    var osmAttrib='Map data © OpenStreetMap contributors';
-    var osm = new L.TileLayer(osmUrl, {
+    /*var osmAttrib='Map data © OpenStreetMap contributors';
+    var osm = new L.TileLayer(tiles, {
       minZoom: 1, maxZoom: 20, attribution: osmAttrib
-    });*/
-    //app.layers.tiles['osm'] = osm;
+    });*/ 
+  
+    var layers = [];
 
-    // select the OSM map in the menu
+    $.each(app.mapConfig.tiles, function(id, url){
+      app.mapConfig.tiles[id].layer = L.tileLayer(url);
+      layers.push(app.mapConfig.tiles[id].layer);
+    });
 
-    // start the map in South-East England
-    app.map.setView(new L.LatLng(52.01193653675363, -0.3240966796875), 7);
-    //app.map.addLayer(app.layers.tiles['osm']);
+    app.map = new L.map('map', {
+        center: new L.LatLng(52.01193653675363, -0.3240966796875),
+        zoom: 7,
+        layers: layers
+    });
 
+    //app.map.addLayer(osm);
+
+  },
+
+  addTileLayer: function(url){
+
+    var app = this, map = app.map;
+
+    var layer = new L.TileLayer(url);   
+    
+    if(!app.layers['tiles']){
+      app.layers['tiles'] = {};
+    } 
+
+    if(app.layers.tiles[id]){
+      // just show the layer
+      map.showLayer(app.layers.tiles[id]);
+    } else {
+      // add the new layer to the map
+      app.layers.tiles[id] = layer;
+      map.addLayer(layer);      
+    }
+
+
+  },
+
+  removeTileLayer: function(id){
+    var app = this, map = app.map;
+    map.removeLayer(app.layers.tiles[id]);
   },
 
   bindInteraction: function(){
 
     var app = this, map = app.map;
 
-    $('#data-layers ul li:not(".category, .userArea")').hover(function(){
+    $('#data-layers ul li.feed').hover(function(){
       var e = $(this);
 
       //e.unbind('hover');
@@ -82,7 +129,7 @@ var Feeder = {
       e.popover('destroy');
     });
 
-    $('#data-layers ul li:not(".category, .userArea, .Maps")').click(function(e){
+    $('#data-layers ul li.feed').click(function(e){
     	
     	var toggle = $(this).find('i.toggle');
      	var id = $(this).attr('id');
@@ -107,37 +154,26 @@ var Feeder = {
 
     });
 
-
-    $('#data-layers ul li.Maps').click(function(e){
-      
-      $('#data-layers ul li.Maps').removeClass('enabled');
-      $('#data-layers ul li.Maps i.toggle').removeClass('fa-check-circle').addClass('fa-circle-o');
-
-      var toggle = $(this).find('i.toggle');
-      var id = $(this).attr('id');
-
+    $('#data-layers ul li.tiles').click(function(){
+      var id = $(this).attr('id'), category = $(this).data('category');
       $(this).toggleClass('enabled');
-
-      if(!toggle.hasClass('fa-check-circle')){
-        toggle.removeClass('fa-circle-o').addClass('fa-check-circle');
-        app.addTileLayer($(this).attr('id'));
+      if(!$(this).hasClass('enabled')){
+        app.addTileLayer(app.feedConfigs[category][id].url);
       } else {
-        toggle.removeClass('fa-check-circle').addClass('fa-circle-o');
-        app.removeTileLayer($(this).attr('id'));      
-      } 
-
+        app.removeTileLayer(id);
+      }
+      
     });
-
 
     $('li.userArea').on('mouseover', function(){
       $(this).find('i').addClass('fa-ban');
     }).on('mouseout', function(){
       $(this).find('i').removeClass('fa-ban');
     }).on('click', function(){
-      app.removeUserAreas();
+      app.removeUserGeography();
     });
 
-    map.on('dragend', function(){
+    map.on('move', function(){
       if(app.autoDetectEnabled){
         app.detectArea();
       }
@@ -160,44 +196,7 @@ var Feeder = {
         window.location.href = 'http://floodfeeder.cluefulmedia.com/uk.json';
     });
 
-    $('li#osm').click();
 
-  },
-
-  addTileLayer: function(id){
-
-    var app = this, map = app.map; 
-    
-    if(!app.layers['tiles']){
-      app.layers['tiles'] = {};
-    } 
-
-    if(app.mapConfig.currentLayer){
-      app.removeTileLayer(app.mapConfig.currentLayer);
-    }
-
-    if(app.layers.tiles[id]){
-      // just show the layer
-      //map.showLayer(app.layers.tiles[id]);
-      map.addLayer(app.layers.tiles[id]);
-    } else {
-      // add the new layer to the map
-      app.layers.tiles[id] = new L.TileLayer(app.mapConfig.tiles[id].url, {
-        minZoom: 1, 
-        maxZoom: 20, 
-        attribution: app.mapConfig.tiles[id].attribution
-      });
-
-      map.addLayer(app.layers.tiles[id]);      
-    }
-
-    app.mapConfig.currentLayer = id;
-
-  },
-
-  removeTileLayer: function(id){
-    var app = this, map = app.map;
-    map.removeLayer(app.layers.tiles[id]);
   },
 
   enableFeed: function(id){
@@ -287,23 +286,25 @@ var Feeder = {
 
     var category = $('li#'+id).data('category');
 
-    var bounds = app.map.getBounds(),
-    swBounds = [bounds._southWest.lat, bounds._southWest.lng],
-    neBounds = [bounds._northEast.lat, bounds._northEast.lng];
-
   	var params = {
   		url: app.feedConfigs[category][id].url,
-  		data: {
-        bounds:[swBounds, neBounds]
-      }
+  		data: ''
   	};
-
-    params.data[id] = true;
 
   	switch(id){
   		case 'warnings':
+  		    params.data = {
+  		        lat: loc.lat,
+  		        lon: loc.lng,
+  		        radius: 50
+  		    };
   		  break;
   		case 'alerts' : 
+  		    params.data = {
+  		        lat: loc.lat,
+  		        lon: loc.lng,
+  		        radius: 50
+  		    };
   		  break;
   		case 'countries' : 
   		  break;
@@ -385,7 +386,7 @@ var Feeder = {
 
         layer.on({
           click:function(e){
-            app.setUserAreas({
+            app.setUserGeography({
               type: 'country',
               name: feature.properties.name,
               data: feature,
@@ -415,7 +416,7 @@ var Feeder = {
 
           layer.on({
             click:function(){
-              app.setUserAreas({
+              app.setUserGeography({
                 type:'ward',
                 name: feature.properties.WD11NM,
                 data: feature,
@@ -542,7 +543,7 @@ var Feeder = {
         });
 
         app.userArea = app.autoDetectTemp[chosenAreaID];
-        app.setUserAreas({
+        app.setUserGeography({
           type: 'detected',
           name: app.userArea.name,
           data: app.userArea,
@@ -572,7 +573,7 @@ var Feeder = {
         app.layers['detected'][""+id] = L.geoJson(data, {
           onEachFeature: function(feature, layer){
             layer.on('click', function(){
-              app.setUserAreas({
+              app.setUserGeography({
                 type: 'detected',
                 name: app.autoDetectTemp[id].name,
                 data: feature,
@@ -591,7 +592,7 @@ var Feeder = {
 
   },
 
-  setUserAreas: function(area){
+  setUserGeography: function(area){
     var app = this, map = app.map;
     app.userArea = area.data;
 
@@ -603,7 +604,7 @@ var Feeder = {
     map.fitBounds(area.layer.getBounds(), {padding: [0,0]});
   },
 
-  removeUserAreas: function(){
+  removeUserGeography: function(){
     var app = this;
     delete app.userArea;
     $('li.userArea').empty().hide();
@@ -665,18 +666,6 @@ var Feeder = {
 	  	return [point.x, point.y];
 	},
 
-/*  addLayersToMap: function(map){
-    
-    var app = this, map = app.map;
-    var layers = [];
-
-    $.each(app.mapConfig.tiles, function(id, url){
-      app.mapConfig.tiles[id].layer = L.tileLayer(url);
-      map.addLayer(app.mapConfig.tiles[id].layer);
-    });
-
-  },
-*/
 	createFeedList: function(){
 
 		var app = this;
@@ -686,7 +675,7 @@ var Feeder = {
 
 			var icon = '';
 
-			if(category === "Areas"){
+			if(category === "Geography"){
 				icon = 'fa-globe';
 			}
 
@@ -694,22 +683,27 @@ var Feeder = {
 
 			$.each(feeds, function(feed, config){
 
+        var className = 'feed';
+
 				switch(config.type){
 					case 'points' : 
 						icon = 'fa-map-marker';
 						break;
-					case 'tiles' : 
-						icon = 'fa-th';
+					case 'shapes' : 
+						//icon = 'fa-tint';
 						break;
 					case 'tabular' : 
 						icon = 'fa-th-list';
 						break;
-				}
+          case 'tiles' : 
+            icon = 'fa-th';
+            className = 'tiles';
+            break;
+        }
 
-				ul.append($('<li />')
-          .attr('id', feed)
+				ul.append($('<li />').attr('id', feed)
+          .attr('class', className)
           .attr('data-category', category)
-          .attr('class', category)
           .text(config.label)
           .append($('<span class="area btn btn-success btn-xs" />'))
           .append($('<i />').attr('class', 'toggle fa fa-lg fa-circle-o'))
@@ -717,7 +711,7 @@ var Feeder = {
           );
 			});
 
-			if(category === "Areas"){
+			if(category === "Geography"){
 				ul.append($('<li id="detect" class="detect" />')
           .text('Auto-detect')
           .append($('<i class="toggle fa fa-lg fa-circle-o" />'))
@@ -736,7 +730,6 @@ var Feeder = {
     var app = this;
     $.getJSON('feedConfigs.json', function(data){
       app.feedConfigs = data;
-      app.mapConfig.tiles = data.Maps;
       callback();
     });
   },
