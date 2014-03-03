@@ -153,12 +153,12 @@ var Feeder = {
     })
 
 
-    $('button.json').click(function(){
+    /*$('button.json').click(function(){
         window.location.href = 'http://floodfeeder.cluefulmedia.com/subunits.json';
     });
     $('button.geojson').click(function(){
         window.location.href = 'http://floodfeeder.cluefulmedia.com/uk.json';
-    });
+    });*/
 
     app.setupSliders();
 
