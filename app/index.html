@@ -17,6 +17,7 @@
     <!-- Custom styles for this template -->
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/leaflet.css" rel="stylesheet">
+    <link href="css/slider.css" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
@@ -53,8 +54,7 @@
         <ul class="nav navbar-nav navbar-right">
           <li><a href="#" data-toggle="modal" data-target="#aboutModal">About</a></li>
           <li><a href="#" data-toggle="modal" data-target="#sourcesModal">Data</a></li>
-          <li><button type="button" class="json btn btn-default btn-sm">EXPORT JSON</button></li>
-          <li><button type="button" class="geojson btn btn-primary btn-sm">EXPORT GEOJSON</button></li>
+          <li><button type="button" class="json btn btn-default btn-sm" data-target="#exportModal">EXPORT</button></li>
         </ul>
       </div>
     </div>
@@ -68,6 +68,21 @@
 
         <div id="map">
           <i class="target fa fa-3x fa-crosshairs"></i>
+        </div>
+
+        <div id="layerControls">
+          <p><b>Opacity</b><input id="opacity" type="text" class="span2" value="" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="5" data-slider-id="opacitySlider"></p>
+          <p><b>Thickness</b><input id="thickness" type="text" class="span2" value="1" data-slider-min="0" data-slider-max="5" data-slider-step="1" data-slider-value="1" data-slider-id="thicknessSlider"></p>
+          <p>
+          <b>R</b> <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="255" data-slider-step="1" data-slider-value="128" data-slider-id="RC" id="R" data-slider-tooltip="hide">
+          </p>
+          <p>
+          <b>G</b> <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="255" data-slider-step="1" data-slider-value="128" data-slider-id="GC" id="G" data-slider-tooltip="hide">
+          </p>
+          <p>
+          <b>B</b> <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="255" data-slider-step="1" data-slider-value="128" data-slider-id="BC" id="B" data-slider-tooltip="hide">
+          </p>
+          <div id="RGB"></div>          
         </div>
 
       </div>
@@ -180,14 +195,41 @@
     </div>
   </div> <!-- end about modal -->
 
+
+
+<!-- Data sources modal -->
+  <div class="modal fade" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="sourcesModalLabel">Export feeds</h4>
+        </div>
+        <div class="modal-body">
+          <!-- select all -->
+          <!-- -->          
+          <div class="clear"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Export</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div> <!-- end about modal -->
+
+
+
+
   <!-- Bootstrap core JavaScript
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
   <script src="scripts/jquery-2.0.2.min.js"></script>
   <script src="scripts/bootstrap.js"></script>
-  <script src="scripts/d3.v3.min.js"></script>
+  <script src="scripts/bootstrap-slider.js"></script>
+  <!--script src="scripts/d3.v3.min.js"></script-->
   <script src="scripts/topojson.v1.min.js"></script>
-  <script src="scripts/d3.geo.tile.v0.min.js"></script>
+  <!--script src="scripts/d3.geo.tile.v0.min.js"></script-->
   <script src="scripts/leaflet.js"></script>
   <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
   <script src="scripts/floodfeeder.js"></script>

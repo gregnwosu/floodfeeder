@@ -1,101 +1,12 @@
 {
-   "Maps":{
-       "osm": {
-         "url":"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-         "label":"OpenStreetMap",
-         "type":"tiles",
-         "attribution": "OpenStreetMap contributors",
-         "description": "OpenStreetMap tile layer",
-         "dummy":[]         
-      },
-      "aerial":{
-         "url": "http://otile1.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png",
-         "label":"Aerial",
-         "type":"tiles",
-         "attribution": "MapQuest and OpenStreetMap contributors",
-         "description": "Aerial map provided by MapQuest",
-         "dummy":[]          
-      },      
-       "transport": {
-         "url":"http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png",
-         "label":"Transport",
-         "type":"tiles",
-         "attribution": "Thunderforest and OpenStreetMap contributors",
-         "description": "Transport tile layer",
-         "dummy":[]         
-      },
-      "landscape": {
-         "url":"http://{s}.tile.thunderforest.com/landscape/{z}/{x}/{y}.png",
-         "label":"Landscape",
-         "type":"tiles",
-         "attribution": "Thunderforest and OpenStreetMap contributors",
-         "description": "Landscape tile layer",
-         "dummy":[]         
-      },
-      "outdoors": {
-         "url":"http://{s}.tile.thunderforest.com/outdoors/{z}/{x}/{y}.png",
-         "label":"Outdoors",
-         "type":"tiles",
-         "attribution": "Thunderforest and OpenStreetMap contributors",
-         "description": "Outdoors tile layer",
-         "dummy":[]         
-      },
-      "toner": {
-         "url":"http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",
-         "label":"Print friendly",
-         "type":"tiles",
-         "attribution": "Stamen and OpenStreetMap contributors",
-         "description": "Toner map tile layer",
-         "dummy":[]         
-      },
-      "watercolor": {
-         "url":"http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.png",
-         "label":"Watercolor",
-         "type":"tiles",
-         "attribution": "Stamen and OpenStreetMap contributors",
-         "description": "Artistic map tile layer",
-         "dummy":[]         
-      },
-      "osooc1": {
-         "url":"http://{s}.ooc.openstreetmap.org/npe/{z}/{x}/{y}.png",
-         "label":"OS 1945-55 (Patchy)",
-         "type":"tiles",
-         "attribution": "Ordnance Survey maps from <a href='http://www.openstreetmap.org/'>OpenStreetMap</a>, <a href='http://creativecommons.org/licenses/by-nc/2.5/'>CC-BY-NC</a>",
-         "description": "Ordnance Survey 'Out-of-copyright' - New Popular Edition (1945-55, 1:50k)",
-         "dummy":[]         
-      },
-      "osooc2": {
-         "url":"http://{s}.ooc.openstreetmap.org/os1/{z}/{x}/{y}.jpg",
-         "label":"OS 1946-60 (Patchy)",
-         "type":"tiles",
-         "attribution": "Ordnance Survey maps from <a href='http://www.openstreetmap.org/'>OpenStreetMap</a>, <a href='http://creativecommons.org/licenses/by-nc/2.5/'>CC-BY-NC</a>",
-         "description": "Ordnance Survey 'Out-of-copyright' - 1st Edition (1946-60, 1:25k)",
-         "dummy":[]         
-      },  
-      "osooc3": {
-         "url":"http://{s}.ooc.openstreetmap.org/os7/{z}/{x}/{y}.jpg",
-         "label":"OS 1947-60 (Patchy)",
-         "type":"tiles",
-         "attribution": "Ordnance Survey maps from <a href='http://www.openstreetmap.org/'>OpenStreetMap</a>, <a href='http://creativecommons.org/licenses/by-nc/2.5/'>CC-BY-NC</a>",
-         "description": "Ordnance Survey 'Out-of-copyright' - 7th Series (1947-60, 1:50k)",
-         "dummy":[]         
-      }      
-   },
-   "Areas":{
-      "countries":{
-         "url":"countries.json",
-         "label":"Countries",
-         "type":"geography",
-         "description": "Shapes files of UK country borders from Ordnance Survey, converted to GeoJSON, and then compressed to TopoJSON."
-      },
-      "wards":{
-         "url":"ukwards.topo.json",
-         "label":"Wards",
-         "type":"geography",
-         "description": "Shapes files of UK wards from Ordnance Survey, converted to GeoJSON, and then compressed to TopoJSON."
-      }
-   },
    "Floods":{
+      "alertareas":{
+         "url": "north-east-simplified.topojson",
+         "fullURL": "north-east.topojson",
+         "label":"Alert areas",
+         "type":"topojson",
+         "description": "Flood alert areas from the Environment Agency. Data has been simplified by 25% for interaction purposes."
+      },
       "warnings":{
          "url":"http://floodfeeder.cluefulmedia.com/api/floods/",
          "label":"Flood warnings",
@@ -203,7 +114,113 @@
          ]
       }
    },
+   "Maps":{
+       "osm": {
+         "url":"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+         "label":"OpenStreetMap",
+         "type":"tiles",
+         "attribution": "OpenStreetMap contributors",
+         "description": "OpenStreetMap tile layer",
+         "dummy":[]         
+      },
+      "aerial":{
+         "url": "http://oatile{s}.mqcdn.com/naip/{z}/{x}/{y}.jpg",
+         "label":"Aerial",
+         "type":"tiles",
+         "attribution": "Tiles from <a href='http://www.mapquest.com/'>MapQuest</a>, portions courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency",
+         "description": "MapQuest Aerial map tiles",
+         "dummy":[]          
+      },      
+       "transport": {
+         "url":"http://{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png",
+         "label":"Transport",
+         "type":"tiles",
+         "attribution": "Thunderforest and OpenStreetMap contributors",
+         "description": "Transport tile layer",
+         "dummy":[]         
+      },
+      "landscape": {
+         "url":"http://{s}.tile2.opencyclemap.org/landscape/{z}/{x}/{y}.png",
+         "label":"Landscape",
+         "type":"tiles",
+         "attribution": "Thunderforest and OpenStreetMap contributors",
+         "description": "Landscape tile layer",
+         "dummy":[]         
+      },
+      "outdoors": {
+         "url":"http://{s}.tile2.opencyclemap.org/outdoors/{z}/{x}/{y}.png",
+         "label":"Outdoors",
+         "type":"tiles",
+         "attribution": "Thunderforest and OpenStreetMap contributors",
+         "description": "Outdoors tile layer",
+         "dummy":[]         
+      },
+      "toner": {
+         "url":"http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png",
+         "label":"Print friendly",
+         "type":"tiles",
+         "attribution": "Stamen and OpenStreetMap contributors",
+         "description": "Toner map tile layer",
+         "dummy":[]         
+      },
+      "osooc1": {
+         "url":"http://{s}.ooc.openstreetmap.org/npe/{z}/{x}/{y}.png",
+         "label":"OS 1945-55 (Patchy)",
+         "type":"tiles",
+         "attribution": "Ordnance Survey maps from <a href='http://www.openstreetmap.org/'>OpenStreetMap</a>, <a href='http://creativecommons.org/licenses/by-nc/2.5/'>CC-BY-NC</a>",
+         "description": "Ordnance Survey 'Out-of-copyright' - New Popular Edition (1945-55, 1:50k)",
+         "dummy":[]         
+      },
+      "osooc2": {
+         "url":"http://{s}.ooc.openstreetmap.org/os1/{z}/{x}/{y}.jpg",
+         "label":"OS 1946-60 (Patchy)",
+         "type":"tiles",
+         "attribution": "Ordnance Survey maps from <a href='http://www.openstreetmap.org/'>OpenStreetMap</a>, <a href='http://creativecommons.org/licenses/by-nc/2.5/'>CC-BY-NC</a>",
+         "description": "Ordnance Survey 'Out-of-copyright' - 1st Edition (1946-60, 1:25k)",
+         "dummy":[]         
+      },  
+      "osooc3": {
+         "url":"http://{s}.ooc.openstreetmap.org/os7/{z}/{x}/{y}.jpg",
+         "label":"OS 1947-60 (Patchy)",
+         "type":"tiles",
+         "attribution": "Ordnance Survey maps from <a href='http://www.openstreetmap.org/'>OpenStreetMap</a>, <a href='http://creativecommons.org/licenses/by-nc/2.5/'>CC-BY-NC</a>",
+         "description": "Ordnance Survey 'Out-of-copyright' - 7th Series (1947-60, 1:50k)",
+         "dummy":[]         
+      }      
+   },
+   "Areas":{
+      "countries":{
+         "url":"countries.json",
+         "label":"Countries",
+         "type":"geography",
+         "description": "Shapes files of UK country borders from Ordnance Survey, converted to GeoJSON, and then compressed to TopoJSON."
+      },
+      "wards":{
+         "url":"ukwards.topo.json",
+         "label":"Wards",
+         "type":"geography",
+         "description": "Shapes files of UK wards from Ordnance Survey, converted to GeoJSON, and then compressed to TopoJSON."
+      }
+   },
    "Infrastructure":{
+      "nuclear":{
+         "url": "uk_nuclear_power_stations.json",
+         "label":"Nuclear power stations",
+         "type":"points",
+          "description": "Nuclear power station locations provided by DEFRA."
+      },
+      "forests":{
+         "url": "national_forests.json",
+         "label":"National forests",
+         "type":"polygons",
+          "description": "National forests data"
+      },
+      "heritage":{
+         "url": "heritage.json",
+         "label":"Heritage areas",
+         "type":"polygons",
+          "description": "Heritage areas"
+      },
       "mobilephonemasts":{
          "url":"",
          "label":"Mobile phone masts",

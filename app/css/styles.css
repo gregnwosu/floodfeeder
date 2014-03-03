@@ -107,6 +107,9 @@ ul.data-sources li div {
 #data-layers ul {
   margin: 0;
 }
+#data-layers ul.floods {
+  background: none repeat scroll 0 0 #B3C6DC;
+}
 #data-layers ul li {
   cursor: pointer;
   margin-bottom: 1px;
@@ -131,6 +134,10 @@ ul.data-sources li div {
 #data-layers ul li.category h3 {
   font-size: 20px;
   margin: 0;
+}
+#data-layers ul.floods li.category {
+  background: none repeat scroll 0 0 #5B7FAA;
+  color: #FFFFFF;
 }
 #data-layers ul li.category:hover{
   background: none repeat scroll 0 0 #CCCCCC;
@@ -235,4 +242,53 @@ path.ward {
 path.ward:hover {
   fill-opacity:0.6;
   stroke-opacity: 1;
+}
+
+#layerControls {
+  background: none repeat scroll 0 0 #FFFFFF;
+  bottom: 20px;
+  display: none;
+  margin-right: 40px;
+  padding: 10px;
+  position: fixed;
+  right: 0;
+  z-index: 9999;
+}
+.slider.slider-horizontal {
+  float: right;
+  height: 20px;
+  margin-left: 20px;
+  width: 100px !important;
+}
+#RGB {
+  display: none;
+  height: 20px;
+  background: rgb(128, 128, 128);
+}
+#RC .slider-selection {
+  background: #FF8282;
+}
+#RC .slider-handle {
+  background: red;
+}
+#GC .slider-selection {
+  background: #428041;
+}
+#GC .slider-handle {
+  background: green;
+}
+#BC .slider-selection {
+  background: #8283FF;
+}
+#BC .slider-handle {
+  border-bottom-color: blue;
+}
+#R, #G, #B {
+  width: 300px;
+}
+
+div.leaflet-popup-content table tr td {
+  border: 1px solid #EEEEEE;
+  display: table-cell;
+  padding: 2px 5px;
 }

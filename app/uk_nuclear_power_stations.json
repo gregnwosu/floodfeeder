@@ -1,0 +1,16 @@
+{
+"type": "FeatureCollection",
+                                                                                
+"features": [
+{ "type": "Feature", "properties": { "NAME": "HINKLEY POINT B", "OPERATOR": "BRITISH ENERGY" }, "geometry": { "type": "Point", "coordinates": [ -3.130092577617501, 51.209877746870006 ] } },
+{ "type": "Feature", "properties": { "NAME": "HEYSHAM 1", "OPERATOR": "BRITISH ENERGY" }, "geometry": { "type": "Point", "coordinates": [ -2.915215958413842, 54.029361914242116 ] } },
+{ "type": "Feature", "properties": { "NAME": "HUNTERSTON B", "OPERATOR": "BRITISH ENERGY" }, "geometry": { "type": "Point", "coordinates": [ -4.89446801192973, 55.720962015086045 ] } },
+{ "type": "Feature", "properties": { "NAME": "TORNESS", "OPERATOR": "BRITISH ENERGY" }, "geometry": { "type": "Point", "coordinates": [ -2.408617067465145, 55.968867284373211 ] } },
+{ "type": "Feature", "properties": { "NAME": "HARTLEPOOL", "OPERATOR": "BRITISH ENERGY" }, "geometry": { "type": "Point", "coordinates": [ -1.18006986878152, 54.634472110915425 ] } },
+{ "type": "Feature", "properties": { "NAME": "SIZEWELL B", "OPERATOR": "BRITISH ENERGY" }, "geometry": { "type": "Point", "coordinates": [ 1.618714520264823, 52.214189642364559 ] } },
+{ "type": "Feature", "properties": { "NAME": "DUNGENESS B", "OPERATOR": "BRITISH ENERGY" }, "geometry": { "type": "Point", "coordinates": [ 0.960368438763324, 50.912211286746796 ] } },
+{ "type": "Feature", "properties": { "NAME": "OLDBURY", "OPERATOR": "BRITISH NUCLEAR GROUP (MAGNOX)" }, "geometry": { "type": "Point", "coordinates": [ -2.571032995816644, 51.648420313733908 ] } },
+{ "type": "Feature", "properties": { "NAME": "WYLFA", "OPERATOR": "BRITISH NUCLEAR GROUP (MAGNOX)" }, "geometry": { "type": "Point", "coordinates": [ -4.48220124965036, 53.416655175590883 ] } },
+{ "type": "Feature", "properties": { "NAME": "HEYSHAM 2", "OPERATOR": "BRITISH ENERGY" }, "geometry": { "type": "Point", "coordinates": [ -2.915215958413842, 54.029361914242116 ] } }
+]
+}

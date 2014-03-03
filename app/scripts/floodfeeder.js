@@ -65,7 +65,7 @@ var Feeder = {
       //e.unbind('hover');
       if(e.attr('id') === "detect"){
         e.popover({
-          title: "Auto-detection provided by MapIt",
+          title: "Nearby areas API provided by MapIt",
           content: "Depending on where the center of the map is, we call MapIt's API to suggest which areas contain that point.",
           placement: 'right'
         }).popover('show'); 
@@ -160,8 +160,78 @@ var Feeder = {
         window.location.href = 'http://floodfeeder.cluefulmedia.com/uk.json';
     });
 
+    app.setupSliders();
+
     $('li#osm').click();
 
+  },
+
+  setupSliders: function(){
+
+    var app = this, map = app.map;
+
+    $('#opacity').slider().on('slide', function(ev){
+        var layer = app.selectedLayer;
+        /*var style = layer._options.style();
+        var value = ev.value;
+        console.log(value/10);
+        style.opacity = value/10;
+        style.fillOpacity = value/10;
+        layer.setStyle(style);*/
+        app.setLayerStyle(layer);
+    }).data('slider');
+
+    $('#thickness').slider().on('slide', function(ev){
+        var layer = app.selectedLayer;
+        /*var style = layer._options.style();
+        var value = ev.value;
+        console.log(value);
+        if(value > 0){
+          style.width = value;
+          style.stroke = true;
+        } else {
+          style.stroke = false;
+        }
+        layer.setStyle(style);*/
+        app.setLayerStyle(layer);
+    }).data('slider');
+
+    var RGBChange = function() {
+      $('#RGB').css('background', 'rgb('+r.getValue()+','+g.getValue()+','+b.getValue()+')');
+      var layer = app.selectedLayer;
+      /*var style = layer._options.style();
+      style.color = 'rgb('+r.getValue()+','+g.getValue()+','+b.getValue()+')';*/
+      app.setLayerStyle(layer);
+    };
+
+    var r = $('#R').slider()
+      .on('slide', RGBChange)
+      .data('slider');
+    var g = $('#G').slider()
+      .on('slide', RGBChange)
+      .data('slider');
+    var b = $('#B').slider()
+      .on('slide', RGBChange)
+      .data('slider'); 
+  },  
+
+  setLayerStyle: function(layer, style){
+
+    var app = this, map = app.map;
+   
+    layer.setStyle({
+      opacity: $('#opacity').data('slider').getValue()/10,
+      fillOpacity: $('#opacity').data('slider').getValue()/10,
+      strokeWidth: $('#thickness').data('slider').getValue(),
+      color: $('#RGB').css('background-color')
+    });
+
+  },
+
+  selectLayer: function(layer){
+    var app = this, map = app.map;
+    app.selectedLayer = layer;
+    $('#layerControls').show();
   },
 
   addTileLayer: function(id){
@@ -231,7 +301,9 @@ var Feeder = {
       	console.log("successfully loaded "+id);
 
       	app.data[id] = {};
-      	app.data[id].data = data;
+        
+        app.data[id].data = data;
+
       	app.data[id].loaded = true;
       	
       	// add it to map
@@ -301,14 +373,20 @@ var Feeder = {
     params.data[id] = true;
 
   	switch(id){
+      case 'alertareas':
+        break;
   		case 'warnings':
   		  break;
   		case 'alerts' : 
+        break;
+      case 'alertareas':
   		  break;
   		case 'countries' : 
   		  break;
   		case 'wards' :
   		  break;
+      case 'nuclear' :
+        break;
   		case 'mobilephonemasts' :
   		  break;
   		default:
@@ -332,8 +410,21 @@ var Feeder = {
   			break;
       case 'warnings':
       case 'alerts' :
+        break;
+      case 'alertareas':
+        app.showTopoJSON(id);
+        break;
+      case 'forests' :
+        app.showPolygons(id, 'NAME', 'MEASURE');
+        break;
+       case 'heritage' :
+        app.showPolygons(id, 'NAME', 'MEASURE');
+        break;
+      case 'nuclear' : 
+        app.showPoints(id, 'NAME', 'OPERATOR');
+        break;
       case 'mobilephonemasts' : 
-        app.showMarkers(id);
+        app.showPoints(id, 'title', 'description');
         break;
   	}
 
@@ -347,6 +438,71 @@ var Feeder = {
 
   },
 
+  showTopoJSON: function(id){
+
+    var app = this, map = app.map;
+    
+    //console.log('showTopoJSON');
+
+    // in case it hasn't been parsed
+    if(typeof app.data[id].data === "string"){
+      app.data[id].data = JSON.parse(app.data[id].data);
+    }
+
+    var data = app.data[id].data;
+
+    // dymamically get the area name of the topology
+    for ( property in data.objects ) {
+      var areaName = property;
+    }
+
+    app.layers[id] = 
+      L.geoJson(topojson.feature(data, data.objects[areaName]).features, {
+
+      style: function(feature) {
+        
+        var style = {
+          className: id,
+          color: "#7900FF",
+          weight: 1,
+          opacity: 0.5,
+          fillOpacity: 0.5
+        };
+
+        switch(id){
+          case 'alertareas':
+            style.color = "#FF9600";
+            break;
+          case 'warningareas':
+            style.color = "#FF0000";
+            break;
+        }
+
+        return style;
+      },
+      onEachFeature: function (feature, layer) {
+
+        var table = "<table>";
+        $.each(feature.properties, function(id, value){
+          if(value && value.length > 0){
+            table += "<tr><td>"+id+"</td><td>"+value+"</td></tr>";
+          }
+        });
+        table+= "</table>";
+
+        layer.bindPopup(table);
+        layer.on({
+          click: function(){
+            app.selectLayer(layer);
+          }
+        });
+      }
+    })
+    .addTo(map);
+
+    map.fitBounds(app.layers[id].getBounds(), {padding: [0,0]});
+
+  },
 
   showCountries: function(){
 
@@ -385,6 +541,7 @@ var Feeder = {
 
         layer.on({
           click:function(e){
+            app.selectLayer(layer);
             app.setUserAreas({
               type: 'country',
               name: feature.properties.name,
@@ -415,6 +572,7 @@ var Feeder = {
 
           layer.on({
             click:function(){
+              app.selectLayer(layer);
               app.setUserAreas({
                 type:'ward',
                 name: feature.properties.WD11NM,
@@ -430,15 +588,29 @@ var Feeder = {
 
   },
 
-  showMarkers: function(id){
+  showPoints: function(id, titleKey, descriptionKey){
 
     var app = this, map = app.map;
 
     app.layers[id] = L.geoJson(app.data[id].data, {
       onEachFeature: function(feature, layer){
         //console.log(feature);
-        layer.bindPopup("<strong>"+feature.properties.title +
-            "</strong><br />"+feature.properties.description);      
+        layer.bindPopup("<strong>"+feature.properties[titleKey] +
+            "</strong><br />"+feature.properties[descriptionKey]);      
+      }
+    }).addTo(map);
+  },
+
+
+  showPolygons: function(id, titleKey, descriptionKey){
+
+    var app = this, map = app.map;
+
+    app.layers[id] = L.geoJson(app.data[id].data, {
+      onEachFeature: function(feature, layer){
+        //console.log(feature);
+        layer.bindPopup("<strong>"+feature.properties[titleKey] +
+            "</strong><br />"+feature.properties[descriptionKey]);      
       }
     }).addTo(map);
   },
@@ -688,7 +860,9 @@ var Feeder = {
 
 			if(category === "Areas"){
 				icon = 'fa-globe';
-			}
+			} else if(category === "Floods"){
+        ul.addClass('floods');
+      }
 
 			ul.append($('<li class="category" />').append($('<h3 />').text(category)));
 
@@ -719,7 +893,7 @@ var Feeder = {
 
 			if(category === "Areas"){
 				ul.append($('<li id="detect" class="detect" />')
-          .text('Auto-detect')
+          .text('Find area')
           .append($('<i class="toggle fa fa-lg fa-circle-o" />'))
           .append($('<i class="fa fa-lg fa-fw fa-crosshairs" />'))
           );
@@ -761,6 +935,7 @@ var Feeder = {
 };
 
 (function(){
+
   Feeder.init();
 
   $(window).resize(function(){
