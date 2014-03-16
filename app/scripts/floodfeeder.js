@@ -128,7 +128,6 @@ var Feeder = {
 
     });
 
-
     $('li.userArea').on('mouseover', function(){
       $(this).find('i').addClass('fa-ban');
     }).on('mouseout', function(){
@@ -137,11 +136,23 @@ var Feeder = {
       app.removeUserAreas();
     });
 
-    map.on('dragend', function(){
+    map.on('click', function(){
+      $('#dataGridPanel').hide();  
+	  });
+
+    $('#viewData').click(function(){
+      app.showDataGrid(app.currentFeed);
+    });
+
+    map.on('moveend', function(e) {
+      
       if(app.autoDetectEnabled){
         app.detectArea();
       }
-	   });
+
+      app.getUpdatedData(e.target.getBounds());
+
+    });
 
     $('#search').keypress(function(e) {
       if(e.which == 13) {
@@ -150,19 +161,93 @@ var Feeder = {
       }
     }).parent().find('button').click(function(){
         app.focusOnLocation($('#search').val());     
-    })
-
-
-    /*$('button.json').click(function(){
-        window.location.href = 'http://floodfeeder.cluefulmedia.com/subunits.json';
     });
-    $('button.geojson').click(function(){
-        window.location.href = 'http://floodfeeder.cluefulmedia.com/uk.json';
-    });*/
 
+/*
+    $('ul.nav-sidebar li:not(.category, .enabled)').hide();
+
+    $('ul.nav-sidebar').hover(function(){
+        $(this).find('li').show();
+    },function(){
+        $(this).find('li:not(.category, .enabled)').hide();
+    });
+*/
     app.setupSliders();
 
+    //app.setupDataGrid();
+
     $('li#osm').click();
+
+  },
+
+  getUpdatedData: function(bounds){
+
+    // find out which feeds are displaying
+
+    // request them again, but using the new bounds
+
+    console.warn('Requesting new data with new bounds...');
+  },
+
+  showDataGrid: function(id){
+
+    console.log("here");
+
+    var app = this;
+
+    var props = [];
+
+    var columns = [{
+        property: 'lat',
+        label: 'Latitude',
+        sortable: false
+      },{
+        property: 'lng',
+        label: 'Longitude',
+        sortable: false
+      }];
+
+    for ( property in app.data[id].data.features[0].properties ) {
+      props.push(property);
+      columns.push({
+        property: property,
+        label: property,
+        sortable: false
+      });
+    }
+
+
+    // INITIALIZING THE DATAGRID
+    var dataSource = new StaticDataSource({
+
+      // Column definitions for Datagrid
+      columns: columns,
+
+      // Create IMG tag for each returned image
+      formatter: function (items) {
+        $.each(items, function (index, item) {
+          item.lat = item.geometry.coordinates[1];
+          item.lng = item.geometry.coordinates[0];
+          for (var i = 0; i < props.length; i++) {
+            item[props[i]] = item.properties[props[i]];
+          };
+        });
+      },
+
+      data: app.data[id].data.features,
+      
+      delay: 250
+
+    });
+
+    $('#dataGrid').datagrid({
+      dataSource: dataSource,
+      stretchHeight: true
+    });
+
+    $('#dataGridPanel').show();
+
+    //$('#dataGrid').datagrid({ dataSource: dataSource, stretchHeight: true })
 
   },
 
@@ -359,14 +444,15 @@ var Feeder = {
 
     var category = $('li#'+id).data('category');
 
-    var bounds = app.map.getBounds(),
-    swBounds = [bounds._southWest.lat, bounds._southWest.lng],
-    neBounds = [bounds._northEast.lat, bounds._northEast.lng];
+    var bounds = app.map.getBounds();
+    //swBounds = [bounds._southWest.lat, bounds._southWest.lng],
+    //neBounds = [bounds._northEast.lat, bounds._northEast.lng];
 
   	var params = {
   		url: app.feedConfigs[category][id].url,
   		data: {
-        bounds:[swBounds, neBounds]
+        bbox: bounds._southWest.lng + ',' + bounds._southWest.lat + 
+        ',' + bounds._northEast.lng + ',' + bounds._northEast.lat
       }
   	};
 
@@ -401,6 +487,9 @@ var Feeder = {
 
   	var app = this, map = app.map;
 
+    $('#viewData').show();
+    app.currentFeed = id;
+
   	switch(id){
   		case 'countries':
   			app.showCountries();
@@ -433,6 +522,10 @@ var Feeder = {
   hideFeedFromMap: function(id){
   	
   	var app = this, map = app.map;
+
+    $('#viewData').hide();
+    $('#dataGridPanel').hide();
+    delete app.currentFeed;
 
   	map.removeLayer(app.layers[id]);
 

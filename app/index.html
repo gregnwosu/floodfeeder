@@ -17,6 +17,8 @@
     <!-- Custom styles for this template -->
     <link href="css/dashboard.css" rel="stylesheet">
     <link href="css/leaflet.css" rel="stylesheet">
+    <link href="//www.fuelcdn.com/fuelux/2.6.0/css/fuelux.min.css" rel="stylesheet" type="text/css">
+    <link href="//www.fuelcdn.com/fuelux/2.6.0/css/fuelux-responsive.css" rel="stylesheet" type="text/css">
     <link href="css/slider.css" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
@@ -62,8 +64,10 @@
 
   <div class="container-fluid">
     <div class="row">
+
       <div id="data-layers" class="col-sm-3 col-md-2 sidebar">
       </div>
+      
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
         <div id="map">
@@ -85,6 +89,84 @@
           <div id="RGB"></div>          
         </div>
 
+        <div id="viewData"><button type="button" class="btn btn-default btn-sm" >View data</button></div>
+
+        <div id="dataGridPanel">
+            <table id="dataGrid" class="table table-bordered datagrid">
+            <thead>
+            <tr>
+              <th>
+                <span class="datagrid-header-title"></span>
+
+                <!--div class="datagrid-header-left">
+                  <div class="input-append search datagrid-search">
+                    <input type="text" class="input-medium" placeholder="Search">
+                    <button type="button" class="btn"><i class="icon-search"></i></button>
+                  </div>
+                </div>
+                <div class="datagrid-header-right">
+                  <div class="select filter" data-resize="auto">
+                    <button type="button" data-toggle="dropdown" class="btn dropdown-toggle">
+                      <span class="dropdown-label"></span>
+                      <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li data-value="all" data-selected="true"><a href="#">All</a></li>
+                      <li data-value="lt5m"><a href="#">Population &lt; 5M</a></li>
+                      <li data-value="gte5m"><a href="#">Population &gt;= 5M</a></li>
+                    </ul>
+                  </div>
+                </div-->
+              </th>
+            </tr>
+            </thead>
+
+            <tfoot>
+            <tr>
+              <th>
+                <div class="datagrid-footer-left" style="display:none;">
+                  <div class="grid-controls">
+                    <span>
+                      <span class="grid-start"></span> -
+                      <span class="grid-end"></span> of
+                      <span class="grid-count"></span>
+                    </span>
+                    <div class="select grid-pagesize" data-resize="auto">
+                      <button type="button" data-toggle="dropdown" class="btn dropdown-toggle">
+                        <span class="dropdown-label"></span>
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li data-value="5"><a href="#">5</a></li>
+                        <li data-value="10" data-selected="true"><a href="#">10</a></li>
+                        <li data-value="20"><a href="#">20</a></li>
+                        <li data-value="50"><a href="#">50</a></li>
+                        <li data-value="100"><a href="#">100</a></li>
+                      </ul>
+                    </div>
+                    <span>Per Page</span>
+                  </div>
+                </div>
+                <div class="datagrid-footer-right" style="display:none;">
+                  <div class="grid-pager">
+                    <button type="button" class="btn grid-prevpage"><i class="icon-chevron-left"></i></button>
+                    <span>Page</span>
+
+                    <div class="input-append dropdown combobox">
+                      <input class="span1" type="text">
+                      <button type="button" class="btn" data-toggle="dropdown"><i class="caret"></i></button>
+                      <ul class="dropdown-menu"></ul>
+                    </div>
+                    <span>of <span class="grid-pages"></span></span>
+                    <button type="button" class="btn grid-nextpage"><i class="icon-chevron-right"></i></button>
+                  </div>
+                </div>
+              </th>
+            </tr>
+            </tfoot>
+
+          </table>
+          </div>
       </div>
     </div>
   </div>
@@ -227,6 +309,8 @@
   <script src="scripts/jquery-2.0.2.min.js"></script>
   <script src="scripts/bootstrap.js"></script>
   <script src="scripts/bootstrap-slider.js"></script>
+  <script src="http://www.fuelcdn.com/fuelux/2.6.0/loader.min.js" type="text/javascript"></script>
+  <script src="datasource.js" type="text/javascript"></script>
   <!--script src="scripts/d3.v3.min.js"></script-->
   <script src="scripts/topojson.v1.min.js"></script>
   <!--script src="scripts/d3.geo.tile.v0.min.js"></script-->

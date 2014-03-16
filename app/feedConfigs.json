@@ -226,68 +226,70 @@
          "label":"Mobile phone masts",
          "type":"points",
          "description": "CSV data provided by Ofcom. George van den Driessche converted the site locations to latitude &amp; longitude, and we've converted to geoJSON.",
-         "dummy":[
-            {
-               "geometry":{
-                  "type":"Point",
-                  "coordinates":[
-                     -0.5791854858398438,
-                     51.46598592502469,
-                     0
-                  ]
+         "dummy":{
+               "features": [
+               {
+                  "geometry":{
+                     "type":"Point",
+                     "coordinates":[
+                        -0.5791854858398438,
+                        51.46598592502469,
+                        0
+                     ]
+                  },
+                  "type":"Feature",
+                  "properties":{
+                     "description":"",
+                     "title":"O2 Mast 21312"
+                  }
                },
-               "type":"Feature",
-               "properties":{
-                  "description":"",
-                  "title":"O2 Mast 21312"
-               }
-            },
-            {
-               "geometry":{
-                  "type":"Point",
-                  "coordinates":[
-                     -0.5029678344726562,
-                     51.516007082492614,
-                     0
-                  ]
+               {
+                  "geometry":{
+                     "type":"Point",
+                     "coordinates":[
+                        -0.5029678344726562,
+                        51.516007082492614,
+                        0
+                     ]
+                  },
+                  "type":"Feature",
+                  "properties":{
+                     "description":"",
+                     "title":"Orange Mast DD21"
+                  }
                },
-               "type":"Feature",
-               "properties":{
-                  "description":"",
-                  "title":"Orange Mast DD21"
-               }
-            },
-            {
-               "geometry":{
-                  "type":"Point",
-                  "coordinates":[
-                     -0.36289215087890625,
-                     51.47197425351888,
-                     0
-                  ]
+               {
+                  "geometry":{
+                     "type":"Point",
+                     "coordinates":[
+                        -0.36289215087890625,
+                        51.47197425351888,
+                        0
+                     ]
+                  },
+                  "type":"Feature",
+                  "properties":{
+                     "description":"",
+                     "title":"EE Mast AS0D2"
+                  }
                },
-               "type":"Feature",
-               "properties":{
-                  "description":"",
-                  "title":"EE Mast AS0D2"
+               {
+                  "geometry":{
+                     "type":"Point",
+                     "coordinates":[
+                        -0.5469131469726562,
+                        51.45999681055089,
+                        0
+                     ]
+                  },
+                  "type":"Feature",
+                  "properties":{
+                     "description":"",
+                     "title":"Orange Mast OR213"
+                  }
                }
-            },
-            {
-               "geometry":{
-                  "type":"Point",
-                  "coordinates":[
-                     -0.5469131469726562,
-                     51.45999681055089,
-                     0
-                  ]
-               },
-               "type":"Feature",
-               "properties":{
-                  "description":"",
-                  "title":"Orange Mast OR213"
-               }
-            }
-         ]
+            ]
+         }
       }
    }
 }
