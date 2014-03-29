@@ -26,8 +26,8 @@
     margin-right: 35px;
 }
 .uv-icon.uv-top-right {
-    right: 12px;
-    top: 7px;
+  right: 12px;
+  top: 6px !important;
 }
 #aboutModalLabel {
   padding: 5px;
