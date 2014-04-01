@@ -124,7 +124,7 @@
          "dummy":[]         
       },
       "aerial":{
-         "url": "http://oatile{s}.mqcdn.com/naip/{z}/{x}/{y}.jpg",
+         "url": "http://maptile.maps.svc.ovi.com/maptiler/maptile/newest/satellite.day/{z}/{x}/{y}/256/png8",
          "label":"Aerial",
          "type":"tiles",
          "attribution": "Tiles from <a href='http://www.mapquest.com/'>MapQuest</a>, portions courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency",
@@ -132,7 +132,7 @@
          "dummy":[]          
       },      
        "transport": {
-         "url":"http://{s}.tile2.opencyclemap.org/transport/{z}/{x}/{y}.png",
+         "url": "http://maptile.maps.svc.ovi.com/maptiler/maptile/newest/normal.day.transit/{z}/{x}/{y}/256/png8",
          "label":"Transport",
          "type":"tiles",
          "attribution": "Thunderforest and OpenStreetMap contributors",

@@ -186,7 +186,7 @@ var Feeder = {
 
     // request them again, but using the new bounds
 
-    console.warn('Requesting new data with new bounds...');
+    console.warn('Requesting new data with new bounds...', bounds);
   },
 
   showDataGrid: function(id){
